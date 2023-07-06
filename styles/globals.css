@@ -1,0 +1,28 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #202124;
+  color: rgb(189, 193, 198);
+}
+
+input[type="text"] {
+  border: 1px solid #5f6368;
+  border-radius: 2px;
+  color: #bdc1c6;
+  padding: 0.65em;
+  background: transparent;
+  font-size: 0.925rem;
+  outline: #bdc1c6;
+}
+
+.katex-display {
+  text-align: left;
+}
+
+.katex-display > .katex {
+  text-align: left;
+}
