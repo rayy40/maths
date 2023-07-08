@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "@/styles/shape.module.css";
+import styles from "@/styles/input.module.css";
 import "@/styles/globals.css";
 import LatexExpression from "./LatexExpression";
 
@@ -35,14 +35,14 @@ export default function InputVariable({
   };
 
   return (
-    <div className={styles.variableContainer}>
-      <div className={styles.variableDetail}>
-        <h2 className={styles.variable}>
+    <div className={styles.container}>
+      <div className={styles.content}>
+        <h2 className={styles.expression}>
           <LatexExpression expression={variable} />
         </h2>
-        <p className={styles.variableName}>{name}</p>
+        <p className={styles.name}>{name}</p>
       </div>
-      <div className={styles.variableInput}>
+      <div className={styles.inputWrapper}>
         <input
           onChange={handleInputChange}
           value={inputValue}
