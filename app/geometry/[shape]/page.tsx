@@ -29,7 +29,9 @@ export default function Shapes({ params: { shape } }: Params) {
   const [modifiedLatexExp, setModifiedLatexExp] = useState("");
   const [result, setResult] = useState({ value: 0, exp: "" });
 
-  let selectedShape = formula.find((s) => s.name === shape);
+  console.log(decodeURIComponent(shape));
+
+  let selectedShape = formula.find((s) => s.name === decodeURIComponent(shape));
   let { variables } = countVariables(
     selectedShape?.renderFormula?.[selectedParam]
   );
