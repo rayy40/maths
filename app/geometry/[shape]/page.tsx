@@ -55,10 +55,7 @@ export default function ShapePage({ params: { shape } }: Params) {
     if (solutionContainerRef.current) {
       solutionContainerRef.current.style.display = "block";
 
-      window.scrollTo({
-        top: solutionContainerRef.current.offsetTop,
-        behavior: "smooth",
-      });
+      scrollToContainer(solutionContainerRef);
     }
   };
 
@@ -66,9 +63,9 @@ export default function ShapePage({ params: { shape } }: Params) {
 
   return (
     <>
-      <div className={styles.shapeContainer}>
-        <div className={styles.shapeHeader}>
-          <h2 className={styles.shapeTitle}>{selectedShape?.name}</h2>
+      <div className={styles.shape_container}>
+        <div className={styles.header}>
+          <h2 className={styles.title}>{selectedShape?.name}</h2>
           <div
             ref={dropdownRef}
             style={{ color: "#9aa0a6", position: "relative" }}
@@ -76,13 +73,13 @@ export default function ShapePage({ params: { shape } }: Params) {
             Solve for :
             <span
               onClick={() => setIsDropDownVisible((v) => !v)}
-              className={styles.shapeDropdown}
+              className={styles.dropdown_label}
             >
               {selectedParam} <FaCaretDown />
             </span>
             {isDropDownVisible && (
-              <div className={styles.dropDownContainer}>
-                <ul className={styles.dropDownList}>
+              <div className={styles.dropDown_container}>
+                <ul className={styles.dropDown_list}>
                   {selectedShape &&
                     Object.keys(selectedShape.renderFormula)
                       .filter((key) => key.toLowerCase() !== selectedParam)
@@ -93,7 +90,7 @@ export default function ShapePage({ params: { shape } }: Params) {
                             setIsDropDownVisible((v) => !v);
                           }}
                           key={i}
-                          className={styles.dropDownListItem}
+                          className={styles.dropDown_list_item}
                         >
                           {key}
                         </li>
@@ -102,14 +99,14 @@ export default function ShapePage({ params: { shape } }: Params) {
               </div>
             )}
           </div>
-          <h2 className={styles.shapeFormula}>
+          <h2 className={styles.formula}>
             <LatexExpression
               expression={selectedShape?.renderFormula?.[selectedParam]}
             />
           </h2>
         </div>
-        <div className={styles.shapeContent}>
-          <div className={styles.shapeInputContainer}>
+        <div className={styles.content}>
+          <div className={styles.input_container}>
             {variables.map((variable, i) => (
               <InputVariable
                 setParameters={setParameters}
@@ -121,17 +118,22 @@ export default function ShapePage({ params: { shape } }: Params) {
               />
             ))}
           </div>
-          <div className={styles.shapeImg}>{selectedShape?.image}</div>
+          <div className={styles.figure}>{selectedShape?.image}</div>
         </div>
-        <div className={styles.shapeSubmitContainer}>
-          <button onClick={handleSubmitButton} className={styles.shapeButton}>
+        <div className={styles.submit_container}>
+          <button onClick={handleSubmitButton} className={styles.submit_button}>
             Submit
           </button>
         </div>
       </div>
-      <div ref={solutionContainerRef} className={styles.solutionContainer}>
-        <h2 className={styles.solutionTitle}>Solution: </h2>
-        <div className={styles.solutionContent}>
+      <div ref={solutionContainerRef} className={styles.solution_container}>
+        <h2
+          style={{ paddingBottom: "1.25em", fontSize: "1.25em" }}
+          className={styles.title}
+        >
+          Solution:{" "}
+        </h2>
+        <div className={styles.solution_content}>
           <h3 style={{ height: "60px" }}>
             <LatexExpression
               expression={selectedShape?.renderFormula?.[selectedParam]}
