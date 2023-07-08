@@ -4,6 +4,23 @@
   box-sizing: border-box;
 }
 
+::-webkit-scrollbar {
+  width: 7.5px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #202124;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: #4f5256;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
 body {
   background-color: #202124;
   color: rgb(189, 193, 198);
