@@ -19,7 +19,7 @@ type Params = {
 };
 
 export default function ShapePage({ params: { shape } }: Params) {
-  let bottomRef = useRef(null);
+  let solutionContainerRef = useRef<HTMLDivElement | null>(null);
   let dropdownRef = useRef(null);
   const [selectedParam, setSelectedParam] = useState("area");
   const [result, setResult] = useState({ value: 0, exp: "" });
@@ -52,10 +52,15 @@ export default function ShapePage({ params: { shape } }: Params) {
 
     setInputValues({});
 
-    scrollToContainer(bottomRef.current);
-  };
+    if (solutionContainerRef.current) {
+      solutionContainerRef.current.style.display = "block";
 
-  console.log(inputValues);
+      window.scrollTo({
+        top: solutionContainerRef.current.offsetTop,
+        behavior: "smooth",
+      });
+    }
+  };
 
   useOutsideAlerter(dropdownRef, setIsDropDownVisible);
 
@@ -124,25 +129,23 @@ export default function ShapePage({ params: { shape } }: Params) {
           </button>
         </div>
       </div>
-      {result.exp && (
-        <div className={styles.solutionContainer}>
-          <h2 className={styles.solutionTitle}>Solution: </h2>
-          <div className={styles.solutionContent}>
-            <h3 style={{ height: "60px" }}>
-              <LatexExpression
-                expression={selectedShape?.renderFormula?.[selectedParam]}
-              />
-            </h3>
-            <h3 style={{ height: "60px" }}>
-              <LatexExpression expression={modifiedLatexExp} />
-            </h3>
-            <h3 style={{ height: "60px" }}>
-              <LatexExpression expression={result?.exp} />
-            </h3>
-          </div>
+      <div ref={solutionContainerRef} className={styles.solutionContainer}>
+        <h2 className={styles.solutionTitle}>Solution: </h2>
+        <div className={styles.solutionContent}>
+          <h3 style={{ height: "60px" }}>
+            <LatexExpression
+              expression={selectedShape?.renderFormula?.[selectedParam]}
+            />
+          </h3>
+          <h3 style={{ height: "60px" }}>
+            <LatexExpression expression={modifiedLatexExp} />
+          </h3>
+          <h3 style={{ height: "60px" }}>
+            <LatexExpression expression={result?.exp} />
+          </h3>
         </div>
-      )}
-      <div ref={bottomRef}></div>
+      </div>
+      {/* <div ref={bottomRef}></div> */}
     </>
   );
 }
