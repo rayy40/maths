@@ -18,18 +18,15 @@ type Params = {
   params: { shape: string };
 };
 
-export default function Shapes({ params: { shape } }: Params) {
+export default function ShapePage({ params: { shape } }: Params) {
   let bottomRef = useRef(null);
   let dropdownRef = useRef(null);
-  const [isDropDownVisible, setIsDropDownVisible] = useState(false);
   const [selectedParam, setSelectedParam] = useState("area");
-  const [parameters, setParameters] = useState<{
-    [key: string]: number;
-  }>({});
-  const [modifiedLatexExp, setModifiedLatexExp] = useState("");
   const [result, setResult] = useState({ value: 0, exp: "" });
-
-  console.log(decodeURIComponent(shape));
+  const [modifiedLatexExp, setModifiedLatexExp] = useState("");
+  const [isDropDownVisible, setIsDropDownVisible] = useState(false);
+  const [parameters, setParameters] = useState<{ [key: string]: number }>({});
+  const [inputValues, setInputValues] = useState<{ [key: string]: string }>({});
 
   let selectedShape = formula.find((s) => s.name === decodeURIComponent(shape));
   let { variables } = countVariables(
@@ -53,8 +50,12 @@ export default function Shapes({ params: { shape } }: Params) {
       )
     );
 
+    setInputValues({});
+
     scrollToContainer(bottomRef.current);
   };
+
+  console.log(inputValues);
 
   useOutsideAlerter(dropdownRef, setIsDropDownVisible);
 
@@ -110,6 +111,8 @@ export default function Shapes({ params: { shape } }: Params) {
                 name={selectedShape?.parameters?.[variable]}
                 variable={variable}
                 key={i}
+                inputValue={inputValues[variable] || ""}
+                setInputValue={setInputValues}
               />
             ))}
           </div>

@@ -4,24 +4,33 @@ import "@/styles/globals.css";
 import LatexExpression from "./LatexExpression";
 
 type Props = {
+  variable: string;
+  inputValue: string;
+  name: string | undefined;
   setParameters: React.Dispatch<
     React.SetStateAction<{ [key: string]: number }>
   >;
-  name: string | undefined;
-  variable: string;
+  setInputValue: React.Dispatch<
+    React.SetStateAction<{ [key: string]: string }>
+  >;
 };
 
 export default function InputVariable({
+  inputValue,
+  setInputValue,
   name,
   variable,
   setParameters,
 }: Props) {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseFloat(event.target.value);
+    setInputValue((prev) => ({
+      ...prev,
+      [variable]: event.target.value,
+    }));
 
-    setParameters((prevParameters) => ({
-      ...prevParameters,
-      [variable]: value,
+    setParameters((prev) => ({
+      ...prev,
+      [variable]: parseFloat(event.target.value),
     }));
   };
 
@@ -36,6 +45,7 @@ export default function InputVariable({
       <div className={styles.variableInput}>
         <input
           onChange={handleInputChange}
+          value={inputValue}
           className={styles.input}
           type="text"
           placeholder="Enter value"
