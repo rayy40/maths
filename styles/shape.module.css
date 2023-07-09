@@ -107,23 +107,6 @@
   bottom: 4em;
 }
 
-.submit_button {
-  padding: 0.85em;
-  width: 100px;
-  background: #5f6368;
-  border: 1px solid #5f6368;
-  border-radius: 4px;
-  color: #bdc1c6;
-  cursor: pointer;
-  font-weight: 500;
-  font-size: 0.925rem;
-  transition: background 100ms cubic-bezier(0.19, 1, 0.22, 1);
-}
-
-.submit_button:hover {
-  background: transparent;
-}
-
 .solution_container {
   display: none;
   border-top: 1px solid #5f6368;

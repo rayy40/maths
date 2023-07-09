@@ -44,6 +44,23 @@ input[type="text"] {
   text-align: left;
 }
 
+.submit_button {
+  padding: 0.85em;
+  width: 100px;
+  background: #585d63;
+  border: 1px solid #585d63;
+  border-radius: 4px;
+  color: #bdc1c6;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.925rem;
+  transition: background 100ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.submit_button:hover {
+  background: #4c5056;
+}
+
 @media only screen and (max-width: 767px) {
   :root {
     font-size: 14px;
