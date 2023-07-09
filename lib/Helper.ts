@@ -83,7 +83,10 @@ export const handleResultLatexExp = (
 };
 
 export const scrollToContainer = (container: any): void => {
-  container.scrollIntoView({ behavior: "smooth" });
+  window.scrollTo({
+    top: container.current.offsetTop,
+    behavior: "smooth",
+  });
 };
 
 export const useOutsideAlerter = (ref: any, setDropDown: any): void => {
