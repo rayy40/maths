@@ -121,7 +121,7 @@ export default function ShapePage({ params: { shape } }: Params) {
           <div className={styles.figure}>{selectedShape?.image}</div>
         </div>
         <div className={styles.submit_container}>
-          <button onClick={handleSubmitButton} className={styles.submit_button}>
+          <button onClick={handleSubmitButton} className="submit_button">
             Submit
           </button>
         </div>
@@ -131,7 +131,7 @@ export default function ShapePage({ params: { shape } }: Params) {
           style={{ paddingBottom: "1.25em", fontSize: "1.25em" }}
           className={styles.title}
         >
-          Solution:{" "}
+          Solution:
         </h2>
         <div className={styles.solution_content}>
           <h3 style={{ height: "60px" }}>
@@ -147,7 +147,6 @@ export default function ShapePage({ params: { shape } }: Params) {
           </h3>
         </div>
       </div>
-      {/* <div ref={bottomRef}></div> */}
     </>
   );
 }
