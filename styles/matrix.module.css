@@ -6,7 +6,8 @@
   width: 80%;
   max-width: 1000px;
   display: flex;
-  gap: 1em;
+  gap: 3em;
+  border-bottom: 1px solid #5f6368;
 }
 
 .matrix_section {
@@ -81,10 +82,11 @@
 }
 
 .matrix_container {
+  margin-top: -1em;
   position: relative;
-  height: 100%;
   padding-bottom: 2.5em;
   display: flex;
+  height: 100%;
   gap: 1.5em;
   align-items: center;
   justify-content: center;
@@ -104,7 +106,7 @@
 }
 
 .matrix_input {
-  width: 50px;
+  width: 60px;
   padding: 0.5em !important;
   font-size: 1.25rem !important;
   text-align: center;
@@ -115,28 +117,32 @@
   border-bottom: 1px solid #bdc1c6 !important;
 }
 
-.clear_matrix_btn {
-  padding: 0.75em 1em;
-  width: unset;
+.matrix_button_wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
   position: absolute;
-  bottom: 6em;
+  bottom: 5em;
+}
+
+.matrix_btn {
+  padding: 0.75em 0.25em;
+  width: 100px;
   background: #4c5056;
   border-color: #4c5056;
 }
 
-.clear_matrix_btn:hover {
+.matrix_btn:last-child {
+  background: transparent;
+}
+
+.matrix_btn:hover {
   background: #585d63;
 }
 
-.operations_wrapper {
-  display: flex;
-  gap: 0.25em;
-  align-items: center;
-  flex-wrap: wrap;
-  max-width: 250px;
-}
-
 .operation {
+  font-size: 0.875rem;
   pointer-events: initial;
   width: 50px;
   height: 50px;
@@ -157,21 +163,70 @@
   opacity: 0.5;
 }
 
+.operations_wrapper {
+  display: flex;
+  gap: 0.25em;
+  align-items: center;
+  flex-wrap: wrap;
+  max-width: 250px;
+}
+
 .matrix_page_solution {
   display: none;
+  padding: 3em 0;
   margin: 0 auto;
   width: 80%;
   max-width: 1000px;
+  border-bottom: 1px solid #5f6368;
 }
 
-.matrix_solution {
+.matrix_operation {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  overflow-x: auto;
+  align-items: center;
   gap: 1.5em;
 }
 
+.matrix_operation_col {
+  flex: 0.5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3.5em;
+}
+
+.matrix_operation_col:first-child {
+  border-right: 1px solid #5f6368;
+  align-items: flex-start;
+}
+
+.sub_title {
+  color: #9aa0a6;
+  text-transform: capitalize;
+  font-weight: 500;
+  padding-bottom: 1em;
+  font-size: 1.05rem;
+}
+
 .matrix_display {
-  font-size: 1.5rem;
+  margin: auto;
+  font-size: 1.05rem;
+}
+
+.matrix_equation {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  justify-content: center;
+}
+
+@media only screen and (max-width: 1024px) {
+  .matrix_page_container {
+    padding-left: 0.25em;
+    width: 90%;
+  }
+
+  .matrix_page_solution {
+    padding: 3em 0 3em 0.25em;
+    width: 90%;
+  }
 }
