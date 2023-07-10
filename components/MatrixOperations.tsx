@@ -17,33 +17,33 @@ export default function MatrixOperations({ title, operations, data }: Props) {
 
   const handleOperation = (op: { id: number; operation: string }) => {
     if (op.id === 9) {
-      setVariable(`${variable}^2`);
+      setVariable(`${variable.split("^")[0]}^2`);
 
-      matrixHistory?.[`${variable}^2`] ??
+      matrixHistory?.[`${variable.split("^")[0]}^2`] ??
         getResult("^2", {
           matrix: matrixHistory?.[variable],
           operation: "square",
         });
     } else if (op.id === 10) {
-      setVariable(`${variable}^{-1}`);
+      setVariable(`${variable.split("^")[0]}^{-1}`);
 
-      matrixHistory?.[`${variable}^{-1}`] ??
+      matrixHistory?.[`${variable.split("^")[0]}^{-1}`] ??
         getResult("^{-1}", {
           matrix: matrixHistory?.[variable],
           operation: "inverse",
         });
     } else if (op.id === 11) {
-      setVariable(`${variable}^T`);
+      setVariable(`${variable.split("^")[0]}^T`);
 
-      matrixHistory?.[`${variable}^T`] ??
+      matrixHistory?.[`${variable.split("^")[0]}^T`] ??
         getResult("^T", {
           matrix: matrixHistory?.[variable],
           operation: "transpose",
         });
     } else if (op.id === 12) {
-      setVariable(`${variable}^2`);
+      setVariable(`${variable.split("^")[0]}^2`);
 
-      matrixHistory?.[`${variable}^2`] ??
+      matrixHistory?.[`${variable.split("^")[0]}^2`] ??
         getResult("^n", {
           matrix: matrixHistory?.[variable],
           operation: "square",
