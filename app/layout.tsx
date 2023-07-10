@@ -1,5 +1,7 @@
 import "@/styles/globals.css";
+import "katex/dist/katex.min.css";
 import { Inter } from "next/font/google";
+import { GlobalContextProvider } from "@/context/store";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -18,7 +20,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <GlobalContextProvider>{children}</GlobalContextProvider>
+      </body>
     </html>
   );
 }
