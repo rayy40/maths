@@ -13,6 +13,7 @@ export default function Matrix({ matrix, setMatrix }: Props) {
     columnIndex: number
   ) => {
     const { value } = event.target;
+
     setMatrix((prev) => {
       const updatedData = [...prev];
       updatedData[rowIndex][columnIndex] = value;
