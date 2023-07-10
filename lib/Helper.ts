@@ -102,3 +102,13 @@ export const useOutsideAlerter = (ref: any, setDropDown: any): void => {
     return () => document.removeEventListener("click", handleOutsideClick);
   }, [ref, setDropDown]);
 };
+
+export const isSquareMatrix = (matrix: string[][]): boolean => {
+  const rows = matrix.length;
+  for (let i = 0; i < rows; i++) {
+    if (matrix[i].length !== rows) {
+      return false;
+    }
+  }
+  return true;
+};
