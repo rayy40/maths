@@ -1,47 +1,89 @@
 import React from "react";
-import "katex/dist/katex.min.css";
-import { operations } from "@/lib/types";
-import { InlineMath } from "react-katex";
 import styles from "@/styles/matrix.module.css";
-import { AiOutlineEnter } from "react-icons/ai";
+import { Operations } from "@/lib/types";
+import { InlineMath } from "react-katex";
+import useGetResult from "@/lib/useGetResult";
+import { useGlobalContext } from "@/context/store";
 
 type Props = {
-  handleSubmit: () => void;
-  declaration: string;
-  setDeclaration: React.Dispatch<React.SetStateAction<string>>;
+  title: string;
+  operations?: Operations[];
+  data?: string[];
 };
 
-export default function MatrixOperations({
-  handleSubmit,
-  declaration,
-  setDeclaration,
-}: Props) {
-  const selectedId = operations.find((o) => o.operation === declaration);
+export default function MatrixOperations({ title, operations, data }: Props) {
+  const { getResult } = useGetResult();
+  const { matrixHistory, setVariable, variable } = useGlobalContext();
 
-  const handleClick = (id: number): void => {
-    const selectedOperation = operations.find((o) => o.id === id);
+  const handleOperation = (op: { id: number; operation: string }) => {
+    if (op.id === 9) {
+      setVariable(`${variable}^2`);
 
-    if ([1, 2, 3, 4].includes(id)) {
-      setDeclaration(selectedOperation?.operation!);
+      matrixHistory?.[`${variable}^2`] ??
+        getResult("^2", {
+          matrix: matrixHistory?.[variable],
+          operation: "square",
+        });
+    } else if (op.id === 10) {
+      setVariable(`${variable}^{-1}`);
+
+      matrixHistory?.[`${variable}^{-1}`] ??
+        getResult("^{-1}", {
+          matrix: matrixHistory?.[variable],
+          operation: "inverse",
+        });
+    } else if (op.id === 11) {
+      setVariable(`${variable}^T`);
+
+      matrixHistory?.[`${variable}^T`] ??
+        getResult("^T", {
+          matrix: matrixHistory?.[variable],
+          operation: "transpose",
+        });
+    } else if (op.id === 12) {
+      setVariable(`${variable}^2`);
+
+      matrixHistory?.[`${variable}^2`] ??
+        getResult("^n", {
+          matrix: matrixHistory?.[variable],
+          operation: "square",
+        });
     }
   };
 
   return (
-    <div className={styles.operations_wrapper}>
-      {operations.map((operation) => (
-        <button
-          key={operation.id}
-          onClick={() => handleClick(operation.id)}
-          className={`${styles.operation} ${
-            operation.id === selectedId?.id && styles.operation_disabled
-          }`}
-        >
-          <InlineMath math={operation.operation} />
-        </button>
-      ))}
-      <button onClick={handleSubmit} className={styles.operation}>
-        <AiOutlineEnter style={{ fontSize: "1.15rem" }} />
-      </button>
+    <div className={styles.matrix_operations}>
+      <h3 className={styles.sub_title}>{title}: </h3>
+      <div className={styles.operations_wrapper}>
+        {title === "Operations"
+          ? operations?.map((op) => (
+              <button
+                key={op.id}
+                onClick={() => handleOperation(op)}
+                className={`${styles.operation} ${
+                  op.operation.split("^")[1] === variable.split("^")[1] &&
+                  styles.operation_disabled
+                }`}
+              >
+                <InlineMath
+                  math={`${variable.split("^")[0]}^${
+                    op.operation.split("^")[1]
+                  }`}
+                />
+              </button>
+            ))
+          : data?.map((key, index) => (
+              <button
+                key={index}
+                onClick={() => setVariable(key)}
+                className={`${styles.operation} ${
+                  key === variable && styles.operation_disabled
+                }`}
+              >
+                <InlineMath math={key} />
+              </button>
+            ))}
+      </div>
     </div>
   );
 }
