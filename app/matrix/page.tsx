@@ -11,6 +11,7 @@ import { useGlobalContext } from "@/context/store";
 import MatrixTypes from "@/components/MatrixTypes";
 import { operations } from "@/lib/types";
 import MatrixOperations from "@/components/MatrixOperations";
+import RenderCalculation from "@/components/RenderCalculation";
 
 type Props = {};
 
@@ -65,8 +66,8 @@ export default function MatrixPage({}: Props) {
 
   return (
     <>
-      <div className={styles.matrix_page_container}>
-        <div className={styles.matrix_section}>
+      <div className={styles.page_container}>
+        <div className={styles.section}>
           <div className={styles.header}>
             <h2 className={styles.title}>Matrix Calculator</h2>
             <div className={styles.order_wrapper}>
@@ -123,32 +124,27 @@ export default function MatrixPage({}: Props) {
             </div>
           </div>
           <div className={styles.types_container}>
-            <h3
-              style={{ paddingBottom: "1.25em", fontSize: "1.05rem" }}
-              className={styles.title}
-            >
-              Types:
-            </h3>
+            <h3 className={styles.sub_title}>Types:</h3>
             <MatrixTypes matrix={matrix} setMatrix={setMatrix} />
           </div>
         </div>
-        <div className={styles.matrix_section}>
+        <div className={styles.section}>
           <div className={styles.matrix_container}>
-            <div className={styles.matrix_declare}>
+            <div className={styles.declare}>
               <InlineMath math={declaration} />
               <InlineMath math="=" />
             </div>
             <Matrix matrix={matrix} setMatrix={setMatrix} />
-            <div className={styles.matrix_button_wrapper}>
+            <div className={styles.button_wrapper}>
               <button
                 onClick={handleSubmit}
-                className={`submit_button ${styles.matrix_btn}`}
+                className={`submit_button ${styles.btn}`}
               >
                 Create
               </button>
               <button
                 onClick={createMatrix}
-                className={`submit_button ${styles.matrix_btn}`}
+                className={`submit_button ${styles.btn}`}
               >
                 Reset
               </button>
@@ -156,27 +152,26 @@ export default function MatrixPage({}: Props) {
           </div>
         </div>
       </div>
-      <div ref={solutionContainerRef} className={styles.matrix_page_solution}>
-        <div className={styles.matrix_operation}>
-          <div className={styles.matrix_operation_col}>
-            <MatrixOperations
-              title="Select Matrix"
-              data={Object.keys(matrixHistory).filter(
-                (key) => !key.includes("^")
-              )}
-            />
-            <MatrixOperations
-              title="Operations"
-              operations={operations.filter((op) => op.id >= 9 && op.id <= 12)}
-            />
+      <div ref={solutionContainerRef} className={styles.page_solution}>
+        <div className={styles.operation_container}>
+          <div className={styles.operation_col}>
+            <MatrixOperations />
           </div>
-          <div className={styles.matrix_operation_col}>
-            <div className={styles.matrix_render}>
+          <div className={styles.operation_col}>
+            <div className={styles.render}>
               <RenderMatrix />
             </div>
           </div>
         </div>
-        <div className={styles.matrix_history}></div>
+      </div>
+      <div className={styles.page_calculation}>
+        <h3 style={{ fontSize: "1.15rem" }} className={styles.sub_title}>
+          Calculation:
+        </h3>
+        <div className={styles.calculation_wrapper}>
+          <RenderCalculation title={"equation"} />
+          <RenderCalculation title={"values"} />
+        </div>
       </div>
     </>
   );

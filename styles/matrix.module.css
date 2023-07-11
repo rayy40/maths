@@ -1,4 +1,4 @@
-.matrix_page_container {
+.page_container {
   position: relative;
   margin: 0 auto;
   min-height: 100vh;
@@ -10,7 +10,7 @@
   border-bottom: 1px solid #5f6368;
 }
 
-.matrix_section {
+.section {
   flex: 0.5;
   display: flex;
   gap: 5em;
@@ -92,7 +92,7 @@
   justify-content: center;
 }
 
-.matrix_declare {
+.declare {
   margin-left: -5em;
   display: flex;
   gap: 1.5em;
@@ -117,7 +117,7 @@
   border-bottom: 1px solid #bdc1c6 !important;
 }
 
-.matrix_button_wrapper {
+.button_wrapper {
   width: 100%;
   display: flex;
   align-items: center;
@@ -126,18 +126,18 @@
   bottom: 5em;
 }
 
-.matrix_btn {
+.btn {
   padding: 0.75em 0.25em;
   width: 100px;
   background: #4c5056;
   border-color: #4c5056;
 }
 
-.matrix_btn:last-child {
+.btn:last-child {
   background: transparent;
 }
 
-.matrix_btn:hover {
+.btn:hover {
   background: #585d63;
 }
 
@@ -152,6 +152,11 @@
   border-radius: 4px;
   cursor: pointer;
   box-shadow: inset 0px 0px 5px -2px rgba(64, 68, 72, 1);
+}
+
+.operation_modified {
+  width: 41.5%;
+  flex-wrap: wrap;
 }
 
 .operation:hover {
@@ -171,7 +176,7 @@
   max-width: 250px;
 }
 
-.matrix_page_solution {
+.page_solution {
   display: none;
   padding: 3em 0;
   margin: 0 auto;
@@ -180,21 +185,24 @@
   border-bottom: 1px solid #5f6368;
 }
 
-.matrix_operation {
+.operation_container {
   display: flex;
   align-items: center;
   gap: 1.5em;
 }
 
-.matrix_operation_col {
+.operation_col {
   flex: 0.5;
+}
+
+.operation_col_wrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 3.5em;
 }
 
-.matrix_operation_col:first-child {
+.operation_col:first-child {
   border-right: 1px solid #5f6368;
   align-items: flex-start;
 }
@@ -219,14 +227,27 @@
   justify-content: center;
 }
 
-@media only screen and (max-width: 1024px) {
-  .matrix_page_container {
-    padding-left: 0.25em;
-    width: 90%;
-  }
+.matrix_calculation_display {
+  padding: 2em 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  align-items: flex-start;
+}
 
-  .matrix_page_solution {
-    padding: 3em 0 3em 0.25em;
+.page_calculation {
+  padding: 3em 0;
+  margin: 0 auto;
+  width: 80%;
+  max-width: 1000px;
+  border-bottom: 1px solid #5f6368;
+}
+
+@media only screen and (max-width: 1024px) {
+  .page_container,
+  .page_calculation,
+  .page_solution {
+    padding-left: 0.25em;
     width: 90%;
   }
 }

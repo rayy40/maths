@@ -8,21 +8,42 @@ import {
   useState,
 } from "react";
 
-type ResultType = any[];
-
 type MatrixHistoryType = {
   [key: string]: string[][];
 };
+
+type OperationsType = { name: string; exp: string }[];
+
+const operations: OperationsType = [
+  { name: "square", exp: "A^2" },
+  { name: "transpose", exp: "A^T" },
+  { name: "inverse", exp: "A^{-1}" },
+  { name: "power", exp: "A^n" },
+  { name: "addition", exp: "+" },
+  { name: "subtraction", exp: "-" },
+  { name: "multiplication", exp: "*" },
+  { name: "division", exp: "/" },
+  { name: "rref", exp: "rref(A)" },
+  { name: "determinant", exp: "det(A)" },
+  { name: "trace", exp: "trace(A)" },
+  { name: "enter", exp: "Enter" },
+];
 
 interface ContextProps {
   isLoading: boolean;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
   isError: boolean;
   setIsError: Dispatch<SetStateAction<boolean>>;
+  isCalculatorOn: boolean;
+  setIsCalculatorOn: Dispatch<SetStateAction<boolean>>;
+  exp: string;
+  setExp: Dispatch<SetStateAction<string>>;
+  matrixEquation: string;
+  setMatrixEquation: Dispatch<SetStateAction<string>>;
   matrixHistory: MatrixHistoryType;
   setMatrixHistory: Dispatch<SetStateAction<MatrixHistoryType>>;
-  variable: string;
-  setVariable: Dispatch<SetStateAction<string>>;
+  opsArray: OperationsType;
+  setOpsArray: Dispatch<SetStateAction<OperationsType>>;
 }
 
 const GlobalContext = createContext<ContextProps>({
@@ -30,18 +51,26 @@ const GlobalContext = createContext<ContextProps>({
   setIsLoading: (): boolean => false,
   isError: false,
   setIsError: (): boolean => false,
+  isCalculatorOn: false,
+  setIsCalculatorOn: (): boolean => false,
+  exp: "",
+  setExp: () => {},
+  matrixEquation: "",
+  setMatrixEquation: () => {},
   matrixHistory: {},
   setMatrixHistory: (): MatrixHistoryType => ({}),
-  variable: "",
-  setVariable: () => {},
+  opsArray: [],
+  setOpsArray: (): OperationsType => [],
 });
 
 export const GlobalContextProvider: React.FC = ({ children }: any) => {
-  const [result, setResult] = useState<ResultType>([]);
+  const [isCalculatorOn, setIsCalculatorOn] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-  const [variable, setVariable] = useState<string>("A");
+  const [exp, setExp] = useState<string>("A");
+  const [matrixEquation, setMatrixEquation] = useState(exp);
   const [matrixHistory, setMatrixHistory] = useState<MatrixHistoryType>({});
+  const [opsArray, setOpsArray] = useState<OperationsType>(operations);
 
   return (
     <GlobalContext.Provider
@@ -50,10 +79,16 @@ export const GlobalContextProvider: React.FC = ({ children }: any) => {
         setIsError,
         isLoading,
         setIsLoading,
+        isCalculatorOn,
+        setIsCalculatorOn,
+        exp,
+        setExp,
+        matrixEquation,
+        setMatrixEquation,
         matrixHistory,
         setMatrixHistory,
-        variable,
-        setVariable,
+        opsArray,
+        setOpsArray,
       }}
     >
       {children}

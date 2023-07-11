@@ -1,16 +1,13 @@
 import { useGlobalContext } from "@/context/store";
 
 const useGetResult = () => {
-  const { setIsLoading, setIsError, setMatrixHistory, variable } =
-    useGlobalContext();
+  const { setIsLoading, setIsError, setMatrixHistory } = useGlobalContext();
 
-  const getResult = async (
-    type: string,
-    data: {
-      matrix: { [key: string]: [][] } | string[][];
-      operation: string;
-    }
-  ) => {
+  const getResult = async (data: {
+    matrix: { [key: string]: [][] } | string[][];
+    operation: string;
+    expression: string;
+  }) => {
     setIsLoading(true);
 
     const options = {
@@ -30,7 +27,7 @@ const useGetResult = () => {
         console.log(res);
         setMatrixHistory((prev) => ({
           ...prev,
-          [variable + type]: [...res.result],
+          [data.expression]: [...res.result],
         }));
         setIsLoading(false);
       } else {

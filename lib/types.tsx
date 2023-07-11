@@ -1,22 +1,9 @@
-export interface Operations {
-  id: number;
-  operation: string;
-}
-
-export const operations: Operations[] = [
-  { id: 1, operation: "A" },
-  { id: 2, operation: "B" },
-  { id: 3, operation: "C" },
-  { id: 4, operation: "D" },
-  { id: 5, operation: `+` },
-  { id: 6, operation: "-" },
-  { id: 7, operation: "*" },
-  { id: 8, operation: "/" },
-  { id: 9, operation: "A^2" },
-  { id: 10, operation: "A^{-1}" },
-  { id: 11, operation: "A^T" },
-  { id: 12, operation: "A^n" },
-  { id: 13, operation: "rref" },
-  { id: 14, operation: "det" },
-  { id: 15, operation: "trace" },
+export const operations: { name: string; exp: string }[] = [
+  { name: "square", exp: "A^2" },
+  { name: "transpose", exp: "A^T" },
+  { name: "inverse", exp: "A^{-1}" },
+  { name: "power", exp: "A^n" },
+  { name: "ref", exp: "rref(A)" },
+  { name: "determinant", exp: "det(A)" },
+  { name: "trace", exp: "trace(A)" },
 ];
