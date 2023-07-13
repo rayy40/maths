@@ -9,7 +9,6 @@ import RenderMatrix from "@/components/RenderMatrix";
 import { scrollToContainer } from "@/lib/Helper";
 import { useGlobalContext } from "@/context/store";
 import MatrixTypes from "@/components/MatrixTypes";
-import { operations } from "@/lib/types";
 import MatrixOperations from "@/components/MatrixOperations";
 import RenderCalculation from "@/components/RenderCalculation";
 
@@ -21,7 +20,7 @@ export default function MatrixPage({}: Props) {
   const [columns, setColumns] = useState(2);
   const [matrix, setMatrix] = useState<string[][]>([]);
   const [declaration, setDeclaration] = useState<string>("A");
-  const { setMatrixHistory, matrixHistory } = useGlobalContext();
+  const { setMatrixHistory } = useGlobalContext();
 
   const createMatrix = () => {
     const newMatrix = [];
@@ -58,11 +57,13 @@ export default function MatrixPage({}: Props) {
 
     createMatrix();
 
-    const successor = String.fromCharCode(declaration.charCodeAt(0) + 1);
-    setDeclaration(successor);
+    if (declaration === "O" || declaration === "I") {
+      setDeclaration("A");
+    } else {
+      const successor = String.fromCharCode(declaration.charCodeAt(0) + 1);
+      setDeclaration(successor);
+    }
   };
-
-  console.log(matrixHistory);
 
   return (
     <>
@@ -125,7 +126,11 @@ export default function MatrixPage({}: Props) {
           </div>
           <div className={styles.types_container}>
             <h3 className={styles.sub_title}>Types:</h3>
-            <MatrixTypes matrix={matrix} setMatrix={setMatrix} />
+            <MatrixTypes
+              matrix={matrix}
+              setMatrix={setMatrix}
+              setDeclaration={setDeclaration}
+            />
           </div>
         </div>
         <div className={styles.section}>
