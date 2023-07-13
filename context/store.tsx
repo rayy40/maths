@@ -9,7 +9,7 @@ import {
 } from "react";
 
 type MatrixHistoryType = {
-  [key: string]: string[][];
+  [key: string]: string[][] | string;
 };
 
 type OperationsType = { name: string; exp: string }[];
@@ -40,6 +40,8 @@ interface ContextProps {
   setExp: Dispatch<SetStateAction<string>>;
   matrixEquation: string;
   setMatrixEquation: Dispatch<SetStateAction<string>>;
+  latexCalculatedResult: string;
+  setLatexCalculatedResult: Dispatch<SetStateAction<string>>;
   matrixHistory: MatrixHistoryType;
   setMatrixHistory: Dispatch<SetStateAction<MatrixHistoryType>>;
   opsArray: OperationsType;
@@ -57,6 +59,8 @@ const GlobalContext = createContext<ContextProps>({
   setExp: () => {},
   matrixEquation: "",
   setMatrixEquation: () => {},
+  latexCalculatedResult: "",
+  setLatexCalculatedResult: () => {},
   matrixHistory: {},
   setMatrixHistory: (): MatrixHistoryType => ({}),
   opsArray: [],
@@ -69,6 +73,7 @@ export const GlobalContextProvider: React.FC = ({ children }: any) => {
   const [isError, setIsError] = useState<boolean>(false);
   const [exp, setExp] = useState<string>("A");
   const [matrixEquation, setMatrixEquation] = useState(exp);
+  const [latexCalculatedResult, setLatexCalculatedResult] = useState("");
   const [matrixHistory, setMatrixHistory] = useState<MatrixHistoryType>({});
   const [opsArray, setOpsArray] = useState<OperationsType>(operations);
 
@@ -85,6 +90,8 @@ export const GlobalContextProvider: React.FC = ({ children }: any) => {
         setExp,
         matrixEquation,
         setMatrixEquation,
+        latexCalculatedResult,
+        setLatexCalculatedResult,
         matrixHistory,
         setMatrixHistory,
         opsArray,
