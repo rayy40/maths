@@ -1,15 +1,25 @@
 import React from "react";
 import styles from "@/styles/matrix.module.css";
 import { isSquareMatrix } from "@/lib/Helper";
+import { useGlobalContext } from "@/context/store";
 
 type Props = {
   matrix: string[][];
   setMatrix: React.Dispatch<React.SetStateAction<string[][]>>;
+  setDeclaration: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export default function MatrixTypes({ matrix, setMatrix }: Props) {
+export default function MatrixTypes({
+  matrix,
+  setMatrix,
+  setDeclaration,
+}: Props) {
+  const { setExp } = useGlobalContext();
+
   const fillInWithZeros = (): void => {
     const fillWithZero = matrix.map((row) => row.map((_) => "0"));
+    setDeclaration("O");
+    setExp("O");
 
     setMatrix(fillWithZero);
   };
@@ -21,6 +31,8 @@ export default function MatrixTypes({ matrix, setMatrix }: Props) {
     const fillDiagnolly = matrix.map((row, rowIndex) =>
       row.map((_, colIndex) => (rowIndex === colIndex ? "1" : "0"))
     );
+    setDeclaration("I");
+    setExp("I");
     setMatrix(fillDiagnolly);
   };
 
@@ -28,7 +40,6 @@ export default function MatrixTypes({ matrix, setMatrix }: Props) {
     const fillRandomly = matrix.map((row) =>
       row.map((col) => Math.floor(Math.random() * 100).toString())
     );
-
     setMatrix(fillRandomly);
   };
 
