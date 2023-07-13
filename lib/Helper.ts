@@ -112,3 +112,15 @@ export const isSquareMatrix = (matrix: string[][]): boolean => {
   }
   return true;
 };
+
+export const convertToLatex = (matrix: string[][]) => {
+  let latex_expr = matrix
+    ?.map((row) =>
+      row
+        .map((value) => Math.round(parseFloat(value) * 1000) / 1000)
+        .join(" & ")
+    )
+    .join(" \\\\ ");
+
+  return `\\begin{bmatrix}${latex_expr}\\end{bmatrix}`;
+};
