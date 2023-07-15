@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "@/styles/matrix.module.css";
 import { isSquareMatrix } from "@/lib/Helper";
-import { useGlobalContext } from "@/context/store";
+import { useMatrixContext } from "@/context/MatrixContext";
 
 type Props = {
   matrix: string[][];
@@ -14,7 +14,7 @@ export default function MatrixTypes({
   setMatrix,
   setDeclaration,
 }: Props) {
-  const { setExp } = useGlobalContext();
+  const { setExp } = useMatrixContext();
 
   const fillInWithZeros = (): void => {
     const fillWithZero = matrix.map((row) => row.map((_) => "0"));
