@@ -124,3 +124,12 @@ export const convertToLatex = (matrix: string[][]) => {
 
   return `\\begin{bmatrix}${latex_expr}\\end{bmatrix}`;
 };
+
+export const displayDifferentErrorMessage = (err: string) => {
+  if (err === "Last 2 dimensions of the array must be square") {
+    return "It must be a square matrix";
+  } else if (err === "Matrix det == 0; not invertible.") {
+    return "Singular matrix";
+  }
+  return err;
+};
