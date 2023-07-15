@@ -7,7 +7,7 @@ import { FaPlus, FaMinus } from "react-icons/fa";
 import { InlineMath } from "react-katex";
 import RenderMatrix from "@/components/RenderMatrix";
 import { scrollToContainer } from "@/lib/Helper";
-import { useGlobalContext } from "@/context/store";
+import { useMatrixContext } from "@/context/MatrixContext";
 import MatrixTypes from "@/components/MatrixTypes";
 import MatrixOperations from "@/components/MatrixOperations";
 import RenderCalculation from "@/components/RenderCalculation";
@@ -16,11 +16,12 @@ type Props = {};
 
 export default function MatrixPage({}: Props) {
   let solutionContainerRef = useRef<HTMLDivElement>(null);
+  let calculationContainerRef = useRef<HTMLDivElement>(null);
   const [rows, setRows] = useState(2);
   const [columns, setColumns] = useState(2);
   const [matrix, setMatrix] = useState<string[][]>([]);
   const [declaration, setDeclaration] = useState<string>("A");
-  const { setMatrixHistory } = useGlobalContext();
+  const { setMatrixHistory } = useMatrixContext();
 
   const createMatrix = () => {
     const newMatrix = [];
@@ -45,10 +46,15 @@ export default function MatrixPage({}: Props) {
   }, [rows, columns]);
 
   const handleSubmit = () => {
-    setMatrixHistory((prev) => ({
-      ...prev,
-      [declaration]: [...matrix],
-    }));
+    setMatrixHistory((prev) => {
+      const updatedMatrix = [...matrix].map((row) =>
+        row.map((value) => (value === "" ? "0" : value))
+      );
+      return {
+        ...prev,
+        [declaration]: updatedMatrix,
+      };
+    });
 
     if (solutionContainerRef.current) {
       solutionContainerRef.current.style.display = "block";
@@ -58,10 +64,20 @@ export default function MatrixPage({}: Props) {
     createMatrix();
 
     if (declaration === "O" || declaration === "I") {
-      setDeclaration("A");
+      setDeclaration(declaration);
     } else {
-      const successor = String.fromCharCode(declaration.charCodeAt(0) + 1);
+      const successor =
+        declaration === "D"
+          ? "D"
+          : String.fromCharCode(declaration.charCodeAt(0) + 1);
       setDeclaration(successor);
+    }
+  };
+
+  const handleScroll = () => {
+    if (calculationContainerRef.current) {
+      calculationContainerRef.current.style.display = "block";
+      scrollToContainer(calculationContainerRef);
     }
   };
 
@@ -160,7 +176,7 @@ export default function MatrixPage({}: Props) {
       <div ref={solutionContainerRef} className={styles.page_solution}>
         <div className={styles.operation_container}>
           <div className={styles.operation_col}>
-            <MatrixOperations />
+            <MatrixOperations handleScroll={handleScroll} />
           </div>
           <div className={styles.operation_col}>
             <div className={styles.render}>
@@ -169,14 +185,8 @@ export default function MatrixPage({}: Props) {
           </div>
         </div>
       </div>
-      <div className={styles.page_calculation}>
-        <h3 style={{ fontSize: "1.15rem" }} className={styles.sub_title}>
-          Calculation:
-        </h3>
-        <div className={styles.calculation_wrapper}>
-          <RenderCalculation title={"equation"} />
-          <RenderCalculation title={"values"} />
-        </div>
+      <div ref={calculationContainerRef} className={styles.page_calculation}>
+        <RenderCalculation />
       </div>
     </>
   );
