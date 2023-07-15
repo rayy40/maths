@@ -14,6 +14,12 @@ type MatrixHistoryType = {
 
 type OperationsType = { name: string; exp: string }[];
 
+type CalculatedResultType = { equation: string; result: string };
+
+type EigenValAndVector = {
+  [key: string]: { value: string[]; vector: string[][] };
+};
+
 const operations: OperationsType = [
   { name: "square", exp: "A^2" },
   { name: "transpose", exp: "A^T" },
@@ -27,6 +33,8 @@ const operations: OperationsType = [
   { name: "determinant", exp: "det(A)" },
   { name: "trace", exp: "trace(A)" },
   { name: "enter", exp: "Enter" },
+  { name: "eigen", exp: "Eigen value(A)" },
+  { name: "eigen", exp: "Eigen vector(A)" },
 ];
 
 interface ContextProps {
@@ -36,30 +44,45 @@ interface ContextProps {
   setIsError: Dispatch<SetStateAction<boolean>>;
   isCalculatorOn: boolean;
   setIsCalculatorOn: Dispatch<SetStateAction<boolean>>;
+  isCalculationVisible: boolean;
+  setIsCalculationVisible: Dispatch<SetStateAction<boolean>>;
   exp: string;
   setExp: Dispatch<SetStateAction<string>>;
+  errorMessage: string;
+  setErrorMessage: Dispatch<SetStateAction<string>>;
   matrixEquation: string;
   setMatrixEquation: Dispatch<SetStateAction<string>>;
-  latexCalculatedResult: string;
-  setLatexCalculatedResult: Dispatch<SetStateAction<string>>;
+  eigenValAndVector: EigenValAndVector;
+  setEigenValueAndVector: Dispatch<SetStateAction<EigenValAndVector>>;
+  latexCalculatedResult: CalculatedResultType;
+  setLatexCalculatedResult: Dispatch<SetStateAction<CalculatedResultType>>;
   matrixHistory: MatrixHistoryType;
   setMatrixHistory: Dispatch<SetStateAction<MatrixHistoryType>>;
   opsArray: OperationsType;
   setOpsArray: Dispatch<SetStateAction<OperationsType>>;
 }
 
-const GlobalContext = createContext<ContextProps>({
+const MatrixContext = createContext<ContextProps>({
   isLoading: false,
   setIsLoading: (): boolean => false,
   isError: false,
   setIsError: (): boolean => false,
   isCalculatorOn: false,
   setIsCalculatorOn: (): boolean => false,
+  isCalculationVisible: false,
+  setIsCalculationVisible: (): boolean => false,
   exp: "",
   setExp: () => {},
+  errorMessage: "",
+  setErrorMessage: () => {},
   matrixEquation: "",
   setMatrixEquation: () => {},
-  latexCalculatedResult: "",
+  eigenValAndVector: {},
+  setEigenValueAndVector: () => ({
+    value: [],
+    vector: [[]],
+  }),
+  latexCalculatedResult: { equation: "", result: "" },
   setLatexCalculatedResult: () => {},
   matrixHistory: {},
   setMatrixHistory: (): MatrixHistoryType => ({}),
@@ -67,18 +90,24 @@ const GlobalContext = createContext<ContextProps>({
   setOpsArray: (): OperationsType => [],
 });
 
-export const GlobalContextProvider: React.FC = ({ children }: any) => {
-  const [isCalculatorOn, setIsCalculatorOn] = useState(false);
+export const MatrixContextProvider: React.FC = ({ children }: any) => {
+  const [isCalculatorOn, setIsCalculatorOn] = useState<boolean>(false);
+  const [isCalculationVisible, setIsCalculationVisible] =
+    useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [exp, setExp] = useState<string>("A");
-  const [matrixEquation, setMatrixEquation] = useState(exp);
-  const [latexCalculatedResult, setLatexCalculatedResult] = useState("");
+  const [errorMessage, setErrorMessage] = useState<string>("A");
+  const [matrixEquation, setMatrixEquation] = useState<string>(exp);
+  const [eigenValAndVector, setEigenValueAndVector] =
+    useState<EigenValAndVector>({});
+  const [latexCalculatedResult, setLatexCalculatedResult] =
+    useState<CalculatedResultType>({ equation: "", result: "" });
   const [matrixHistory, setMatrixHistory] = useState<MatrixHistoryType>({});
   const [opsArray, setOpsArray] = useState<OperationsType>(operations);
 
   return (
-    <GlobalContext.Provider
+    <MatrixContext.Provider
       value={{
         isError,
         setIsError,
@@ -86,8 +115,14 @@ export const GlobalContextProvider: React.FC = ({ children }: any) => {
         setIsLoading,
         isCalculatorOn,
         setIsCalculatorOn,
+        isCalculationVisible,
+        setIsCalculationVisible,
+        eigenValAndVector,
+        setEigenValueAndVector,
         exp,
         setExp,
+        errorMessage,
+        setErrorMessage,
         matrixEquation,
         setMatrixEquation,
         latexCalculatedResult,
@@ -99,8 +134,8 @@ export const GlobalContextProvider: React.FC = ({ children }: any) => {
       }}
     >
       {children}
-    </GlobalContext.Provider>
+    </MatrixContext.Provider>
   );
 };
 
-export const useGlobalContext = (): ContextProps => useContext(GlobalContext);
+export const useMatrixContext = (): ContextProps => useContext(MatrixContext);
