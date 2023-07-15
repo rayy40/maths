@@ -1,4 +1,4 @@
-import { useGlobalContext } from "@/context/store";
+import { useMatrixContext } from "@/context/MatrixContext";
 
 const useGetResult = () => {
   const {
@@ -6,7 +6,12 @@ const useGetResult = () => {
     setIsError,
     setMatrixHistory,
     setLatexCalculatedResult,
-  } = useGlobalContext();
+    setEigenValueAndVector,
+    setIsCalculationVisible,
+    setMatrixEquation,
+    setErrorMessage,
+    exp,
+  } = useMatrixContext();
 
   const getResult = async (data: {
     matrix: { [key: string]: [][] } | string[][];
@@ -30,15 +35,33 @@ const useGetResult = () => {
       if (response.ok) {
         const res = await response.json();
         console.log(res);
-        setMatrixHistory((prev) => ({
-          ...prev,
-          [data.expression]: res.result,
-        }));
+        if (data.operation === "eigen") {
+          setEigenValueAndVector((prev) => ({
+            ...prev,
+            [`Eigen value(${data.expression.split("(")[1].split(")")[0]})`]: {
+              value: res.value,
+              vector: res.vector,
+            },
+          }));
+          setEigenValueAndVector((prev) => ({
+            ...prev,
+            [`Eigen vector(${data.expression.split("(")[1].split(")")[0]})`]: {
+              value: res.value,
+              vector: res.vector,
+            },
+          }));
+        } else {
+          setMatrixHistory((prev) => ({
+            ...prev,
+            [data.expression]: res.result,
+          }));
+        }
         setIsLoading(false);
       } else {
-        console.log("Error:", response.status);
-        setIsLoading(false);
+        const err = await response.json();
         setIsError(true);
+        setIsLoading(false);
+        setErrorMessage(err.detail);
       }
     } catch (error) {
       console.log("Error:", error);
@@ -67,12 +90,19 @@ const useGetResult = () => {
       );
       if (response.ok) {
         const res = await response.json();
-        setLatexCalculatedResult(res.latex);
+        console.log(res);
+        setIsCalculationVisible(true);
+        setLatexCalculatedResult({
+          equation: data.equation,
+          result: res.latex,
+        });
+        setMatrixEquation(exp);
         setIsLoading(false);
       } else {
-        console.log("Error:", response.status);
-        setIsLoading(false);
+        const err = await response.json();
         setIsError(true);
+        setIsLoading(false);
+        setErrorMessage(err.detail);
       }
     } catch (error) {
       console.log("Error:", error);
