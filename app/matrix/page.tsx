@@ -21,7 +21,7 @@ export default function MatrixPage({}: Props) {
   const [columns, setColumns] = useState(2);
   const [matrix, setMatrix] = useState<string[][]>([]);
   const [declaration, setDeclaration] = useState<string>("A");
-  const { setMatrixHistory } = useMatrixContext();
+  const { setMatrixHistory, isCalculatorOn } = useMatrixContext();
 
   const createMatrix = () => {
     const newMatrix = [];
@@ -179,9 +179,7 @@ export default function MatrixPage({}: Props) {
             <MatrixOperations handleScroll={handleScroll} />
           </div>
           <div className={styles.operation_col}>
-            <div className={styles.render}>
-              <RenderMatrix />
-            </div>
+            <RenderMatrix />
           </div>
         </div>
       </div>
