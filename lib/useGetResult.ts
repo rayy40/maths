@@ -64,9 +64,9 @@ const useGetResult = () => {
         setErrorMessage(err.detail);
       }
     } catch (error) {
-      console.log("Error:", error);
-      setIsLoading(false);
       setIsError(true);
+      setErrorMessage((error as Error).message);
+      setIsLoading(false);
     }
   };
 
