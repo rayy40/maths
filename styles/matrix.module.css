@@ -105,12 +105,27 @@
   border-right: 1px solid #bdc1c6;
 }
 
+.matrix_wrapper_error {
+  border-left: 1px solid #b43a4e;
+  border-right: 1px solid #b43a4e;
+}
+
+.input_error {
+  position: absolute;
+  bottom: 9.5em;
+  color: #b43a4e;
+}
+
 .matrix_input {
   width: 60px;
   padding: 0.5em !important;
   font-size: 1.25rem !important;
   text-align: center;
   border: none !important;
+}
+
+.matrix_input_error {
+  color: #b43a4e !important;
 }
 
 .matrix_input:focus {
@@ -177,15 +192,17 @@
 }
 
 .page_solution {
+  min-height: 100vh;
   display: none;
-  padding: 3em 0;
   margin: 0 auto;
+  padding: 3em 0;
   width: 80%;
   max-width: 1000px;
   border-bottom: 1px solid #5f6368;
 }
 
 .operation_container {
+  min-height: calc(100vh - 6em);
   display: flex;
   align-items: center;
   gap: 1.5em;
@@ -229,6 +246,7 @@
   align-items: center;
   gap: 0.5em;
   font-size: 1.05rem;
+  overflow-x: auto;
 }
 
 .matrix_display {
@@ -268,5 +286,93 @@
   .page_solution {
     padding-left: 0.25em;
     width: 90%;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .page_container {
+    padding: 5em 0 0;
+    position: relative;
+    flex-direction: column;
+    gap: 5em;
+  }
+  .section {
+    flex: 0.3 0.7;
+    gap: 3em;
+  }
+  .matrix_container {
+    gap: 1em;
+    padding: 1em 0;
+    position: unset;
+    overflow-x: auto;
+  }
+  .declare {
+    gap: 1em;
+  }
+  .input_error {
+    bottom: 6.5em;
+    left: 26%;
+  }
+  .button_wrapper {
+    bottom: 2em;
+  }
+  .operations_wrapper {
+    flex-direction: row;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  .page_container .operations_wrapper .operation {
+    width: 32.5% !important;
+  }
+  .matrix_input {
+    width: 45px;
+    padding: 0;
+  }
+  .operation_container {
+    min-height: calc(100vh - 6em);
+    align-items: unset;
+    flex-direction: column;
+  }
+  .operation_col {
+    flex: unset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    order: 1;
+    overflow-x: hidden;
+  }
+  .matrix_display {
+    margin: 0 auto;
+    font-size: 1.15rem;
+    overflow-x: auto;
+  }
+  .operation_col:last-child {
+    flex: 1;
+    order: 0;
+    border-bottom: 1px solid #5f6368;
+  }
+  .operation_col_wrapper {
+    flex-direction: column;
+    gap: 3em;
+  }
+  .operation_col_container {
+    width: 100%;
+  }
+  .operation_col:first-child {
+    border-right: unset;
+  }
+  .page_solution .operations_wrapper .operation {
+    width: 24% !important;
+  }
+  .eigen_child_wrapper {
+    font-size: 1.15rem;
+    overflow-x: auto;
+  }
+  .page_calculation .matrix_equation {
+    flex-direction: column;
+    font-size: 1.15rem;
+  }
+  .matrix_equation {
+    overflow-x: auto;
   }
 }

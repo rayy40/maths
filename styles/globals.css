@@ -101,4 +101,7 @@ input[type="text"] {
   :root {
     font-size: 14px;
   }
+  ::-webkit-scrollbar {
+    display: none;
+  }
 }
