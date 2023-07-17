@@ -246,7 +246,6 @@
   align-items: center;
   gap: 0.5em;
   font-size: 1.05rem;
-  overflow-x: auto;
 }
 
 .matrix_display {
