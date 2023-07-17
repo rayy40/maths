@@ -21,7 +21,7 @@ export default function MatrixPage({}: Props) {
   const [columns, setColumns] = useState(2);
   const [matrix, setMatrix] = useState<string[][]>([]);
   const [declaration, setDeclaration] = useState<string>("A");
-  const { setMatrixHistory, isCalculatorOn } = useMatrixContext();
+  const { setMatrixHistory, matrixHistory } = useMatrixContext();
 
   const createMatrix = () => {
     const newMatrix = [];
@@ -46,14 +46,11 @@ export default function MatrixPage({}: Props) {
   }, [rows, columns]);
 
   const handleSubmit = () => {
-    setMatrixHistory((prev) => {
-      const updatedMatrix = [...matrix].map((row) =>
-        row.map((value) => (value === "" ? "0" : value))
-      );
-      return {
-        ...prev,
-        [declaration]: updatedMatrix,
-      };
+    const updatedMatrix = [...matrix].map((row) =>
+      row.map((value) => (value === "" ? "0" : value))
+    );
+    setMatrixHistory({
+      [declaration]: updatedMatrix,
     });
 
     if (solutionContainerRef.current) {
@@ -80,6 +77,8 @@ export default function MatrixPage({}: Props) {
       scrollToContainer(calculationContainerRef);
     }
   };
+
+  console.log(matrixHistory);
 
   return (
     <>

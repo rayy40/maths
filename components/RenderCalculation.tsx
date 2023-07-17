@@ -1,13 +1,13 @@
 import React from "react";
 import styles from "@/styles/matrix.module.css";
 import { BlockMath, InlineMath } from "react-katex";
-import { useMatrixContext } from "@/context/MatrixContext";
+import { useApiContext, useMatrixContext } from "@/context/MatrixContext";
 import Loading from "./Loading";
 import { displayDifferentErrorMessage } from "@/lib/Helper";
 
 export default function RenderCalculation() {
-  const { isLoading, isError, errorMessage, latexCalculatedResult } =
-    useMatrixContext();
+  const { latexCalculatedResult } = useMatrixContext();
+  const { isLoading, isError, errorMessage } = useApiContext();
 
   return (
     <div className={styles.calculation_wrapper}>

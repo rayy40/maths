@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styles from "@/styles/matrix.module.css";
 import { InlineMath } from "react-katex";
-import { useMatrixContext } from "@/context/MatrixContext";
+import { useApiContext, useMatrixContext } from "@/context/MatrixContext";
 import useGetResult from "@/lib/useGetResult";
 
 type Props = {
@@ -17,34 +17,31 @@ export default function MatrixOperations({ handleScroll }: Props) {
     opsArray,
     setExp,
     exp,
-    setIsError,
     matrixEquation,
     setMatrixEquation,
     isCalculatorOn,
     setIsCalculatorOn,
   } = useMatrixContext();
+  const { setIsError } = useApiContext();
   const [selectedMatrix, setSelectedMatrix] = useState(exp);
+  const prevMatrixEquationRef = useRef("");
 
   const handleMatrixChange = (matrix: string) => {
     setExp(matrix);
     setIsError(false);
     setSelectedMatrix(matrix);
     handleChangeOpsArray(matrix);
-    if (isCalculatorOn) {
-      setMatrixEquation((prev) => prev + matrix);
-    } else {
-      setMatrixEquation(matrix);
-    }
+    prevMatrixEquationRef.current = matrix;
+    setMatrixEquation(matrix, isCalculatorOn);
   };
 
   const handleChangeOpsArray = (matrix: string) => {
-    setOpsArray((prevOpsArray) => {
-      const modifiedArray = prevOpsArray?.map((op) => {
-        const modifiedExp = op.exp.replace(/(?![TE])[A-Z]/g, matrix);
-        return { ...op, exp: modifiedExp };
-      });
-      return modifiedArray;
-    });
+    setOpsArray(
+      opsArray.map((op) => ({
+        ...op,
+        exp: op.exp.replace(/(?![TE])[A-Z]/g, matrix),
+      }))
+    );
   };
 
   const handleOperationChange = (op: { name: string; exp: string }) => {
@@ -59,7 +56,8 @@ export default function MatrixOperations({ handleScroll }: Props) {
         });
       }
     }
-    setMatrixEquation(op.exp);
+    prevMatrixEquationRef.current = op.exp;
+    setMatrixEquation(op.exp, isCalculatorOn);
   };
 
   const handleMatrixEquation = (buttonLabel: { name: string; exp: string }) => {
@@ -71,8 +69,12 @@ export default function MatrixOperations({ handleScroll }: Props) {
       });
       return setIsCalculatorOn(false);
     }
+    let copy = buttonLabel?.exp;
     setIsCalculatorOn(true);
-    setMatrixEquation((prev) => prev + buttonLabel?.exp);
+    if (prevMatrixEquationRef.current === matrixEquation) {
+      copy = prevMatrixEquationRef.current + copy;
+    }
+    setMatrixEquation(copy, isCalculatorOn);
   };
 
   return (

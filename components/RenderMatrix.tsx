@@ -1,7 +1,7 @@
 import React from "react";
 import { BlockMath, InlineMath } from "react-katex";
 import styles from "@/styles/matrix.module.css";
-import { useMatrixContext } from "@/context/MatrixContext";
+import { useApiContext, useMatrixContext } from "@/context/MatrixContext";
 import { convertToLatex, displayDifferentErrorMessage } from "@/lib/Helper";
 import Loading from "./Loading";
 
@@ -12,10 +12,8 @@ export default function RenderMatrix() {
     matrixEquation,
     isCalculatorOn,
     eigenValAndVector,
-    isLoading,
-    isError,
-    errorMessage,
   } = useMatrixContext();
+  const { isError, isLoading, errorMessage } = useApiContext();
 
   const convertToMatrix = (matrix: string[]) => {
     const latex = matrix.map((value) => String(value)).join(" & ");

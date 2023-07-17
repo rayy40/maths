@@ -1,17 +1,15 @@
-import { useMatrixContext } from "@/context/MatrixContext";
+import { useApiContext, useMatrixContext } from "@/context/MatrixContext";
 
 const useGetResult = () => {
   const {
-    setIsLoading,
-    setIsError,
     setMatrixHistory,
     setLatexCalculatedResult,
     setEigenValueAndVector,
     setIsCalculationVisible,
     setMatrixEquation,
-    setErrorMessage,
     exp,
   } = useMatrixContext();
+  const { setIsError, setIsLoading, setErrorMessage } = useApiContext();
 
   const getResult = async (data: {
     matrix: { [key: string]: [][] } | string[][];
@@ -36,25 +34,22 @@ const useGetResult = () => {
         const res = await response.json();
         console.log(res);
         if (data.operation === "eigen") {
-          setEigenValueAndVector((prev) => ({
-            ...prev,
+          setEigenValueAndVector({
             [`Eigen value(${data.expression.split("(")[1].split(")")[0]})`]: {
               value: res.value,
               vector: res.vector,
             },
-          }));
-          setEigenValueAndVector((prev) => ({
-            ...prev,
+          });
+          setEigenValueAndVector({
             [`Eigen vector(${data.expression.split("(")[1].split(")")[0]})`]: {
               value: res.value,
               vector: res.vector,
             },
-          }));
+          });
         } else {
-          setMatrixHistory((prev) => ({
-            ...prev,
+          setMatrixHistory({
             [data.expression]: res.result,
-          }));
+          });
         }
         setIsLoading(false);
       } else {

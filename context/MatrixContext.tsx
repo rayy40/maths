@@ -1,24 +1,10 @@
-"use client";
-
+import { create } from "zustand";
 import {
-  createContext,
-  useContext,
-  Dispatch,
-  SetStateAction,
-  useState,
-} from "react";
-
-type MatrixHistoryType = {
-  [key: string]: string[][] | string;
-};
-
-type OperationsType = { name: string; exp: string }[];
-
-type CalculatedResultType = { equation: string; result: string };
-
-type EigenValAndVector = {
-  [key: string]: { value: string[]; vector: string[][] };
-};
+  MatrixHistoryType,
+  OperationsType,
+  EigenValAndVector,
+  CalculatedResultType,
+} from "@/lib/types";
 
 const operations: OperationsType = [
   { name: "square", exp: "A^2" },
@@ -37,105 +23,77 @@ const operations: OperationsType = [
   { name: "eigen", exp: "Eigen vector(A)" },
 ];
 
-interface ContextProps {
+interface ApiState {
   isLoading: boolean;
-  setIsLoading: Dispatch<SetStateAction<boolean>>;
+  setIsLoading: (isLoading: boolean) => void;
   isError: boolean;
-  setIsError: Dispatch<SetStateAction<boolean>>;
-  isCalculatorOn: boolean;
-  setIsCalculatorOn: Dispatch<SetStateAction<boolean>>;
-  isCalculationVisible: boolean;
-  setIsCalculationVisible: Dispatch<SetStateAction<boolean>>;
-  exp: string;
-  setExp: Dispatch<SetStateAction<string>>;
+  setIsError: (isError: boolean) => void;
   errorMessage: string;
-  setErrorMessage: Dispatch<SetStateAction<string>>;
-  matrixEquation: string;
-  setMatrixEquation: Dispatch<SetStateAction<string>>;
-  eigenValAndVector: EigenValAndVector;
-  setEigenValueAndVector: Dispatch<SetStateAction<EigenValAndVector>>;
-  latexCalculatedResult: CalculatedResultType;
-  setLatexCalculatedResult: Dispatch<SetStateAction<CalculatedResultType>>;
-  matrixHistory: MatrixHistoryType;
-  setMatrixHistory: Dispatch<SetStateAction<MatrixHistoryType>>;
-  opsArray: OperationsType;
-  setOpsArray: Dispatch<SetStateAction<OperationsType>>;
+  setErrorMessage: (errorMessage: string) => void;
 }
 
-const MatrixContext = createContext<ContextProps>({
+interface MatrixState {
+  isCalculatorOn: boolean;
+  setIsCalculatorOn: (isCalculatorOn: boolean) => void;
+  isCalculationVisible: boolean;
+  setIsCalculationVisible: (isCalculationVisible: boolean) => void;
+  exp: string;
+  setExp: (exp: string) => void;
+  matrixEquation: string;
+  setMatrixEquation: (matrixEquation: string, isCalculatorOn: boolean) => void;
+  eigenValAndVector: EigenValAndVector;
+  setEigenValueAndVector: (eigenValueAndVector: EigenValAndVector) => void;
+  latexCalculatedResult: CalculatedResultType;
+  setLatexCalculatedResult: (
+    latexCalculatedResult: CalculatedResultType
+  ) => void;
+  matrixHistory: MatrixHistoryType;
+  setMatrixHistory: (matrixHistory: MatrixHistoryType) => void;
+  opsArray: OperationsType;
+  setOpsArray: (opsArray: OperationsType) => void;
+}
+
+const useApiStore = create<ApiState>((set) => ({
   isLoading: false,
-  setIsLoading: (): boolean => false,
+  setIsLoading: (isLoading) => set({ isLoading }),
   isError: false,
-  setIsError: (): boolean => false,
+  setIsError: (isError) => set({ isError }),
+  errorMessage: "Error",
+  setErrorMessage: (errorMessage) => set({ errorMessage }),
+}));
+
+const useMatrixStore = create<MatrixState>((set) => ({
   isCalculatorOn: false,
-  setIsCalculatorOn: (): boolean => false,
+  setIsCalculatorOn: (isCalculatorOn) => set({ isCalculatorOn }),
   isCalculationVisible: false,
-  setIsCalculationVisible: (): boolean => false,
-  exp: "",
-  setExp: () => {},
-  errorMessage: "",
-  setErrorMessage: () => {},
-  matrixEquation: "",
-  setMatrixEquation: () => {},
+  setIsCalculationVisible: (isCalculationVisible) =>
+    set({ isCalculationVisible }),
+  exp: "A",
+  setExp: (exp) => set({ exp }),
+  matrixEquation: "A",
+  setMatrixEquation: (text: string, isCalculatorOn: boolean) =>
+    set((state) => ({
+      matrixEquation: isCalculatorOn ? state.matrixEquation + text : text,
+    })),
   eigenValAndVector: {},
-  setEigenValueAndVector: () => ({
-    value: [],
-    vector: [[]],
-  }),
+  setEigenValueAndVector: (eigenValueAndVector) =>
+    set((state) => ({
+      eigenValAndVector: { ...state.eigenValAndVector, ...eigenValueAndVector },
+    })),
   latexCalculatedResult: { equation: "", result: "" },
-  setLatexCalculatedResult: () => {},
+  setLatexCalculatedResult: (latexCalculatedResult) =>
+    set({ latexCalculatedResult }),
   matrixHistory: {},
-  setMatrixHistory: (): MatrixHistoryType => ({}),
-  opsArray: [],
-  setOpsArray: (): OperationsType => [],
-});
+  setMatrixHistory: (matrixHistory: MatrixHistoryType) =>
+    set((state) => ({
+      matrixHistory: {
+        ...state.matrixHistory,
+        ...matrixHistory,
+      },
+    })),
+  opsArray: operations,
+  setOpsArray: (opsArray) => set({ opsArray }),
+}));
 
-export const MatrixContextProvider: React.FC = ({ children }: any) => {
-  const [isCalculatorOn, setIsCalculatorOn] = useState<boolean>(false);
-  const [isCalculationVisible, setIsCalculationVisible] =
-    useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isError, setIsError] = useState<boolean>(false);
-  const [exp, setExp] = useState<string>("A");
-  const [errorMessage, setErrorMessage] = useState<string>("A");
-  const [matrixEquation, setMatrixEquation] = useState<string>(exp);
-  const [eigenValAndVector, setEigenValueAndVector] =
-    useState<EigenValAndVector>({});
-  const [latexCalculatedResult, setLatexCalculatedResult] =
-    useState<CalculatedResultType>({ equation: "", result: "" });
-  const [matrixHistory, setMatrixHistory] = useState<MatrixHistoryType>({});
-  const [opsArray, setOpsArray] = useState<OperationsType>(operations);
-
-  return (
-    <MatrixContext.Provider
-      value={{
-        isError,
-        setIsError,
-        isLoading,
-        setIsLoading,
-        isCalculatorOn,
-        setIsCalculatorOn,
-        isCalculationVisible,
-        setIsCalculationVisible,
-        eigenValAndVector,
-        setEigenValueAndVector,
-        exp,
-        setExp,
-        errorMessage,
-        setErrorMessage,
-        matrixEquation,
-        setMatrixEquation,
-        latexCalculatedResult,
-        setLatexCalculatedResult,
-        matrixHistory,
-        setMatrixHistory,
-        opsArray,
-        setOpsArray,
-      }}
-    >
-      {children}
-    </MatrixContext.Provider>
-  );
-};
-
-export const useMatrixContext = (): ContextProps => useContext(MatrixContext);
+export const useMatrixContext = useMatrixStore;
+export const useApiContext = useApiStore;
