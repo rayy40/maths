@@ -7,6 +7,7 @@ const useGetResult = () => {
     setEigenValueAndVector,
     setIsCalculationVisible,
     setMatrixEquation,
+    isCalculatorOn,
     exp,
   } = useMatrixContext();
   const { setIsError, setIsLoading, setErrorMessage } = useApiContext();
@@ -25,6 +26,7 @@ const useGetResult = () => {
       },
       body: JSON.stringify(data),
     };
+
     try {
       const response = await fetch(
         `http://localhost:8000/api/matrix/${data.operation}`,
@@ -52,6 +54,7 @@ const useGetResult = () => {
           });
         }
         setIsLoading(false);
+        setIsError(false);
       } else {
         const err = await response.json();
         setIsError(true);
@@ -91,8 +94,9 @@ const useGetResult = () => {
           equation: data.equation,
           result: res.latex,
         });
-        setMatrixEquation(exp);
+        setMatrixEquation(exp, isCalculatorOn);
         setIsLoading(false);
+        setIsError(false);
       } else {
         const err = await response.json();
         setIsError(true);

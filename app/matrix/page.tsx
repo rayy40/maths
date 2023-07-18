@@ -10,7 +10,7 @@ import { scrollToContainer } from "@/lib/Helper";
 import { useMatrixContext } from "@/context/MatrixContext";
 import MatrixTypes from "@/components/MatrixTypes";
 import MatrixOperations from "@/components/MatrixOperations";
-import RenderCalculation from "@/components/RenderCalculation";
+import RenderMatrixCalculation from "@/components/RenderMatrixCalculation";
 
 type Props = {};
 
@@ -77,8 +77,6 @@ export default function MatrixPage({}: Props) {
       scrollToContainer(calculationContainerRef);
     }
   };
-
-  console.log(matrixHistory);
 
   return (
     <>
@@ -183,7 +181,7 @@ export default function MatrixPage({}: Props) {
         </div>
       </div>
       <div ref={calculationContainerRef} className={styles.page_calculation}>
-        <RenderCalculation />
+        <RenderMatrixCalculation />
       </div>
     </>
   );

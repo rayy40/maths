@@ -5,7 +5,7 @@ import { useApiContext, useMatrixContext } from "@/context/MatrixContext";
 import Loading from "./Loading";
 import { displayDifferentErrorMessage } from "@/lib/Helper";
 
-export default function RenderCalculation() {
+export default function RenderMatrixCalculation() {
   const { latexCalculatedResult } = useMatrixContext();
   const { isLoading, isError, errorMessage } = useApiContext();
 
