@@ -133,3 +133,41 @@ export const displayDifferentErrorMessage = (err: string) => {
   }
   return err;
 };
+
+export const replaceVariables = (
+  parameters: { [key: string]: string },
+  equation: string,
+  isModified: boolean
+) => {
+  const pattern = /([a-f])(?![^=]*\b[x|y]\b)/g;
+
+  equation = equation.replace(pattern, (match: string) => {
+    if (!match.startsWith("\\")) {
+      switch (match) {
+        case "a":
+          if (parameters?.["a"] === "") return isModified ? "1" : "a";
+          return parameters?.["a"]?.toString() ?? "a";
+        case "b":
+          if (parameters?.["b"] === "") return isModified ? "1" : "b";
+          return parameters?.["b"]?.toString() ?? "b";
+        case "c":
+          if (parameters?.["c"] === "") return isModified ? "1" : "c";
+          return parameters?.["c"]?.toString() ?? "c";
+        case "d":
+          if (parameters?.["d"] === "") return isModified ? "1" : "d";
+          return parameters?.["d"]?.toString() ?? "d";
+        case "e":
+          if (parameters?.["e"] === "") return isModified ? "1" : "e";
+          return parameters?.["e"]?.toString() ?? "e";
+        case "f":
+          if (parameters?.["f"] === "") return isModified ? "1" : "f";
+          return parameters?.["f"]?.toString() ?? "f";
+        default:
+          return match;
+      }
+    }
+    return match;
+  });
+
+  return equation;
+};
