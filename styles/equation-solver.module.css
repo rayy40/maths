@@ -1,0 +1,173 @@
+.page_container {
+  position: relative;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 7.5em 0 7em;
+  width: 80%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2em;
+  border-bottom: 1px solid #5f6368;
+}
+
+.header_container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.title {
+  color: #9aa0a6;
+  text-transform: capitalize;
+  font-weight: 500;
+  padding-bottom: 0.25em;
+}
+
+.sub_title {
+  color: #9aa0a6;
+  text-transform: capitalize;
+  font-weight: 500;
+  padding-bottom: 1.25em;
+  font-size: 1.05rem;
+}
+
+.equation_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+
+.input_container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttons_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+}
+
+.numpad_container {
+  display: flex;
+  gap: 0.25em;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  max-width: 250px;
+}
+
+.numpad {
+  font-size: 0.875rem;
+  pointer-events: initial;
+  width: 50px;
+  height: 50px;
+  border: 1px solid #34373b;
+  color: #bdc1c6;
+  background: #34373b;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: inset 0px 0px 5px -2px rgba(64, 68, 72, 1);
+}
+
+.numpad:hover {
+  background-color: #404448;
+}
+
+.input_section_wrapper {
+  margin-bottom: auto;
+}
+
+.input_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+}
+
+.input_container {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.input_error {
+  border-color: #b43a4e !important;
+  color: #b43a4e !important;
+}
+
+.expression_error {
+  color: #b43a4e !important;
+}
+
+.submit_button_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 5em;
+  position: absolute;
+  bottom: 2em;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.btn {
+  padding: 0.75em 0.25em;
+  width: 80px;
+  background: #4c5056;
+  border-color: #4c5056;
+}
+
+.btn:last-child {
+  background: transparent;
+}
+
+.btn:hover {
+  background: #585d63;
+}
+
+.loading_wrapper,
+.error_wrapper {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.page_solution {
+  display: none;
+  padding: 2em 0;
+  margin: 0 auto;
+  width: 80%;
+  max-width: 1000px;
+  border-bottom: 1px solid #5f6368;
+}
+
+.equation_wrapper {
+  padding: 2em 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5em;
+}
+
+.equation_section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2em;
+}
+
+.roots_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.display_equation {
+  display: flex;
+  gap: 0.5em;
+  flex-direction: column;
+}
