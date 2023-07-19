@@ -1,0 +1,60 @@
+.help_container {
+  position: absolute;
+  z-index: 2;
+  padding: 1.5em 2em;
+  width: 450px;
+  height: 100%;
+  right: 0;
+  top: 0;
+  background-color: #202421;
+  color: #ddd;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+  overflow-y: auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.close_icon {
+  font-size: 1.35rem;
+  cursor: pointer;
+  color: #9aa0a6;
+}
+
+.close_icon:hover {
+  color: #ddd;
+}
+
+.help_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.title {
+  font-weight: 500;
+}
+
+.content {
+  color: #bdc1c6;
+  font-weight: 300;
+  font-size: 0.925rem;
+  line-height: 27px;
+}
+
+.expression {
+  font-size: 1.15rem;
+  color: #e4e4e4;
+}
+
+.guidelines_list {
+  list-style-type: none;
+}
+
+.examples {
+  padding: 1em 0;
+  border-bottom: 1px solid #34373b;
+}
