@@ -15,8 +15,20 @@
 .header_container {
   width: 100%;
   display: flex;
+  justify-content: space-between;
+}
+
+.header_wrapper {
+  display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+.toggle_switch_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  color: #9aa0a6;
 }
 
 .title {
@@ -44,6 +56,12 @@
 .input_container {
   display: flex;
   justify-content: space-between;
+}
+
+.input_advanced_exp {
+  width: 470px !important;
+  height: 50px !important;
+  font-size: 1.1rem !important;
 }
 
 .buttons_wrapper {
@@ -126,6 +144,27 @@
 
 .btn:hover {
   background: #585d63;
+}
+
+.help_container {
+  position: absolute;
+  right: 0;
+  bottom: 3.5em;
+  font-size: 1.65rem;
+  color: #5f6368;
+  cursor: pointer;
+}
+
+.help_icon:hover {
+  color: #9aa0a6;
+}
+
+.help_section_wrapper {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.35);
 }
 
 .loading_wrapper,

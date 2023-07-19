@@ -60,5 +60,19 @@ export const numbers: string[] = [
   "9",
   "0",
   ".",
-  `\\sqrt{}`,
+];
+
+export const advancedOperations = [
+  "\\sqrt{\\square}",
+  "\\sqrt[3]{\\square}",
+  "{\\square}^2",
+  "{\\square}^3",
+  "\\sin({})",
+  "\\cos({})",
+  "\\tan({})",
+  "\\csc({})",
+  "\\sec({})",
+  "\\cot({})",
+  "\\log({})",
+  "\\ln({})",
 ];

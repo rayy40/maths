@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useRef } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import styles from "@/styles/equation-solver.module.css";
 import DropDown from "@/components/DropDown";
 import { equation } from "@/lib/equations";
@@ -10,15 +10,22 @@ import { FaArrowUpLong, FaArrowDownLong, FaDeleteLeft } from "react-icons/fa6";
 import { replaceVariables, scrollToContainer } from "@/lib/Helper";
 import useSolveEquation from "@/lib/useSolveEquation";
 import RenderEquationSolution from "@/components/RenderEquationSolution";
+import MathCalculator from "@/components/MathCalculator";
+import ToggleSwtich from "@/components/ToggleSwtich";
+import { FaRegCircleQuestion } from "react-icons/fa6";
+import Help from "@/components/Help";
 
 export default function EquationSolver() {
   const { getRoots } = useSolveEquation();
   let solutionContainerRef = useRef<HTMLDivElement | null>(null);
   const [activeInput, setActiveInput] = useState("");
+  const [isAdvancedCalcVisible, setIsAdvancedCalcVisible] = useState(false);
+  const [isHelpVisible, setIsHelpVisible] = useState(false);
   const [selectedParam, setSelectedParam] = useState("quadratic");
   const [isInputError, setIsInputError] = useState<{ [key: string]: boolean }>(
     {}
   );
+  const [advancedExp, setAdvancedExp] = useState("");
   const [inputValue, setInputValue] = useState<{ [key: string]: string }>({
     a: "",
   });
@@ -109,6 +116,11 @@ export default function EquationSolver() {
     }));
   };
 
+  const handleChangedExp = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setAdvancedExp(value);
+  };
+
   const hanldeArrowClick = (direction: string) => {
     const keys = Object.keys(selectedEquation?.parameters!);
     const currentIndex = keys.indexOf(activeInput);
@@ -122,7 +134,7 @@ export default function EquationSolver() {
 
     const newInput = keys[newIndex];
     setActiveInput(newInput);
-    // document.getElementById(newInput)?.focus();
+    document.getElementById(newInput)?.focus();
   };
 
   const handleSubmit = () => {
@@ -145,74 +157,114 @@ export default function EquationSolver() {
 
   return (
     <>
-      <div className={styles.page_container}>
+      <div
+        style={{ paddingBottom: isAdvancedCalcVisible ? "5.5em" : "7em" }}
+        className={styles.page_container}
+      >
         <div className={styles.header_container}>
-          <h2 className={styles.title}>Equation Solver</h2>
-          <DropDown
-            selectedParam={selectedParam}
-            setSelectedParam={setSelectedParam}
-            items={items}
-          />
+          <div className={styles.header_wrapper}>
+            <h2 className={styles.title}>Equation Solver</h2>
+            <DropDown
+              selectedParam={selectedParam}
+              setSelectedParam={setSelectedParam}
+              items={items}
+            />
+          </div>
+          <div className={styles.toggle_switch_wrapper}>
+            <p>Advanced Calculator: </p>
+            <ToggleSwtich setIsAdvancedCalcVisible={setIsAdvancedCalcVisible} />
+          </div>
         </div>
         <div className={styles.equation_container}>
-          <BlockMath math={eq ?? selectedEquation?.renderFormula!} />
+          {isAdvancedCalcVisible ? (
+            <BlockMath>{advancedExp}</BlockMath>
+          ) : (
+            <BlockMath math={eq ?? selectedEquation?.renderFormula!} />
+          )}
         </div>
-        <div className={styles.input_container}>
-          <div className={styles.input_section_wrapper}>
-            <h3 className={styles.sub_title}>Input:</h3>
-            <div className={styles.input_wrapper}>
-              {selectedEquation &&
-                Object.keys(selectedEquation?.parameters).map((variable, i) => (
-                  <div key={i} className={styles.input_container}>
-                    <h2
-                      className={`${styles.expression} ${
-                        isInputError?.[variable] && styles.expression_error
-                      }`}
-                    >
-                      <InlineMath math={variable} />
-                    </h2>
-                    <div className={styles.input_field_wrapper}>
-                      <input
-                        id={activeInput}
-                        onClick={() => setActiveInput(variable)}
-                        onChange={(e) => handleInputChange(e, variable)}
-                        value={inputValue?.[variable]}
-                        className={`${styles.input} ${
-                          isInputError?.[variable] && styles.input_error
-                        }`}
-                        type="text"
-                        placeholder="Enter value"
-                      />
-                    </div>
-                  </div>
-                ))}
-            </div>
-          </div>
-          <div className={styles.input_section_wrapper}>
-            <h3 style={{ textAlign: "right" }} className={styles.sub_title}>
-              Number Pad:
-            </h3>
-            <div className={styles.buttons_wrapper}>
-              <NumberPad handleNumberClick={handleNumberClick} />
-              <div className={styles.numpad_container}>
-                <button
-                  onClick={() => hanldeArrowClick("up")}
-                  className={styles.numpad}
-                >
-                  <FaArrowUpLong />
-                </button>
-                <button
-                  onClick={() => hanldeArrowClick("down")}
-                  className={styles.numpad}
-                >
-                  <FaArrowDownLong />
-                </button>
-                <button onClick={handleDeleteClick} className={styles.numpad}>
-                  <FaDeleteLeft />
-                </button>
+        <div
+          style={{ flexDirection: isAdvancedCalcVisible ? "column" : "row" }}
+          className={styles.input_container}
+        >
+          {isAdvancedCalcVisible ? (
+            <>
+              <div>
+                <input
+                  id="advanced_input"
+                  value={advancedExp}
+                  onChange={handleChangedExp}
+                  className={styles.input_advanced_exp}
+                  type="text"
+                />
               </div>
-            </div>
-          </div>
+              <MathCalculator setAdvancedExp={setAdvancedExp} />
+            </>
+          ) : (
+            <>
+              <div className={styles.input_section_wrapper}>
+                <h3 className={styles.sub_title}>Input:</h3>
+                <div className={styles.input_wrapper}>
+                  {selectedEquation &&
+                    Object.keys(selectedEquation?.parameters).map(
+                      (variable, i) => (
+                        <div key={i} className={styles.input_container}>
+                          <h2
+                            className={`${styles.expression} ${
+                              isInputError?.[variable] &&
+                              styles.expression_error
+                            }`}
+                          >
+                            <InlineMath math={variable} />
+                          </h2>
+                          <div className={styles.input_field_wrapper}>
+                            <input
+                              id={variable}
+                              autoComplete={"off"}
+                              onClick={() => setActiveInput(variable)}
+                              onChange={(e) => handleInputChange(e, variable)}
+                              value={inputValue?.[variable]}
+                              className={`${styles.input} ${
+                                isInputError?.[variable] && styles.input_error
+                              }`}
+                              type="text"
+                              placeholder="Enter value"
+                            />
+                          </div>
+                        </div>
+                      )
+                    )}
+                </div>
+              </div>
+              <div className={styles.input_section_wrapper}>
+                <h3 style={{ textAlign: "right" }} className={styles.sub_title}>
+                  Number Pad:
+                </h3>
+                <div className={styles.buttons_wrapper}>
+                  <NumberPad handleNumberClick={handleNumberClick} />
+                  <div className={styles.numpad_container}>
+                    <button
+                      onClick={() => hanldeArrowClick("up")}
+                      className={styles.numpad}
+                    >
+                      <FaArrowUpLong />
+                    </button>
+                    <button
+                      onClick={() => hanldeArrowClick("down")}
+                      className={styles.numpad}
+                    >
+                      <FaArrowDownLong />
+                    </button>
+                    <button
+                      onClick={handleDeleteClick}
+                      className={styles.numpad}
+                    >
+                      <FaDeleteLeft />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
         </div>
         <div className={styles.submit_button_wrapper}>
           <button
@@ -222,16 +274,32 @@ export default function EquationSolver() {
             Submit
           </button>
           <button
-            onClick={() => setInputValue({})}
+            onClick={() => {
+              setInputValue({});
+              setAdvancedExp("");
+            }}
             className={`submit_button ${styles.btn}`}
           >
             Reset
           </button>
         </div>
+        {isAdvancedCalcVisible && (
+          <div className={styles.help_container}>
+            <FaRegCircleQuestion
+              onClick={() => setIsHelpVisible(true)}
+              className={styles.help_icon}
+            />
+          </div>
+        )}
+        {isHelpVisible && (
+          <div className={styles.help_section_wrapper}>
+            <Help setIsHelpVisible={setIsHelpVisible} />
+          </div>
+        )}
       </div>
       <div ref={solutionContainerRef} className={styles.page_solution}>
         <h3 style={{ fontSize: "1.15rem" }} className={styles.sub_title}>
-          Solution:{" "}
+          Solution:
         </h3>
         <div className={styles.solution_wrapper}>
           <RenderEquationSolution />

@@ -12,8 +12,6 @@ export default function RenderEquationSolution({}: Props) {
   const { isLoading, isError, errorMessage } = useApiContext();
   const { result } = useEquationSolverContext();
 
-  console.log(result);
-
   return (
     <>
       {isError && (
