@@ -26,6 +26,86 @@ body {
   color: rgb(189, 193, 198);
 }
 
+.page_container {
+  position: relative;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 4em 0;
+  width: 80%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5em;
+  border-bottom: 1px solid #5f6368;
+}
+
+.header_container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.equation_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+
+.header_wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.toggle_switch_wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 1em;
+  color: #9aa0a6;
+}
+
+.title {
+  color: #9aa0a6;
+  text-transform: capitalize;
+  font-weight: 500;
+  padding-bottom: 0.25em;
+}
+
+.sub_title {
+  color: #9aa0a6;
+  text-transform: capitalize;
+  font-weight: 500;
+  padding-bottom: 1.25em;
+  font-size: 1.05rem;
+}
+
+.input_values_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35em;
+}
+
+.input_values_wrapper {
+  display: flex;
+  gap: 1em;
+}
+
+.input_error {
+  border-color: #b43a4e !important;
+  color: #b43a4e !important;
+}
+
+.expression {
+  width: 30px;
+  font-size: 1.5rem;
+}
+
+.expression_error {
+  color: #b43a4e !important;
+}
+
 input[type="text"] {
   border: 1px solid #5f6368;
   border-radius: 2px;
@@ -61,12 +141,40 @@ input[type="text"] {
   background: #4c5056;
 }
 
+.select_button {
+  font-size: 0.875rem;
+  pointer-events: initial;
+  width: 50px;
+  height: 50px;
+  border: 1px solid #34373b;
+  color: #bdc1c6;
+  background: #34373b;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: inset 0px 0px 5px -2px rgba(64, 68, 72, 1);
+}
+
+.select_button_modified {
+  width: 104px;
+  flex-wrap: wrap;
+}
+
+.select_button:hover {
+  background-color: #404448;
+}
+
+.select_button_disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
 .lds-ring {
   display: inline-block;
   position: relative;
   width: 80px;
   height: 80px;
 }
+
 .lds-ring div {
   box-sizing: border-box;
   display: block;
@@ -88,6 +196,7 @@ input[type="text"] {
 .lds-ring div:nth-child(3) {
   animation-delay: -0.15s;
 }
+
 @keyframes lds-ring {
   0% {
     transform: rotate(0deg);

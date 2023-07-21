@@ -7,12 +7,18 @@ type Props = {
   selectedParam: string;
   setSelectedParam: React.Dispatch<React.SetStateAction<string>>;
   items: string[];
+  setInputValue?: React.Dispatch<
+    React.SetStateAction<{ [key: string]: string }>
+  >;
+  setPolynomialExpression?: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export default function DropDown({
+  setInputValue,
   selectedParam,
   setSelectedParam,
   items,
+  setPolynomialExpression,
 }: Props) {
   let dropdownRef = useRef(null);
   const [isDropDownVisible, setIsDropDownVisible] = useState(false);
@@ -36,6 +42,8 @@ export default function DropDown({
                 onClick={() => {
                   setSelectedParam(name);
                   setIsDropDownVisible((v) => !v);
+                  setInputValue?.({});
+                  setPolynomialExpression?.("");
                 }}
                 key={i}
                 className={styles.dropDown_list_item}

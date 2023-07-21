@@ -16,13 +16,13 @@ export const countVariables = (
 export const calculateResult = (
   variables: string[],
   formula: (params: { [key: string]: number }) => number,
-  parameters: { [key: string]: number },
+  parameters: { [key: string]: string },
   expression: string
 ): { value: number; exp: string } => {
   const params: { [key: string]: number } = {};
 
   for (const variable of variables) {
-    params[variable] = parameters[variable];
+    params[variable] = parseFloat(parameters[variable]);
   }
 
   const result = formula(params);
@@ -33,7 +33,7 @@ export const calculateResult = (
 };
 
 export const modifyLatexExpression = (
-  parameters: { [key: string]: number },
+  parameters: { [key: string]: string },
   expression: string
 ): string => {
   const pattern: RegExp = /(?<==.*)(?<!\\)\b[a-zA-Z]+/g;
@@ -42,25 +42,25 @@ export const modifyLatexExpression = (
     if (!match.startsWith("\\")) {
       switch (match) {
         case "l":
-          return parameters?.["l"].toString();
+          return parameters?.["l"];
         case "w":
-          return parameters?.["w"].toString();
+          return parameters?.["w"];
         case "h":
-          return parameters?.["h"].toString();
+          return parameters?.["h"];
         case "a":
-          return parameters?.["a"].toString();
+          return parameters?.["a"];
         case "b":
-          return parameters?.["b"].toString();
+          return parameters?.["b"];
         case "c":
-          return parameters?.["c"].toString();
+          return parameters?.["c"];
         case "p":
-          return parameters?.["p"].toString();
+          return parameters?.["p"];
         case "q":
-          return parameters?.["q"].toString();
+          return parameters?.["q"];
         case "r":
-          return parameters?.["r"].toString();
+          return parameters?.["r"];
         case "d":
-          return parameters?.["d"].toString();
+          return parameters?.["d"];
         default:
           return match;
       }
@@ -136,31 +136,55 @@ export const displayDifferentErrorMessage = (err: string) => {
 
 export const replaceVariables = (
   parameters: { [key: string]: string },
-  equation: string,
-  isModified: boolean
+  equation: string
 ) => {
-  const pattern = /([a-f])(?![^=]*\b[x|y]\b)/g;
+  let pattern: RegExp = /([a-f])(?![^=]*\b[x|y]\b)/g;
+
+  if (equation.includes("a_0")) {
+    pattern = /a_\d+(?![^=]*\b[x|y]\b)/g;
+  }
 
   equation = equation.replace(pattern, (match: string) => {
     if (!match.startsWith("\\")) {
       switch (match) {
+        case "a_0":
+          if (parameters?.["a_0"] === "") return "a_0";
+          return parameters?.["a_0"]?.toString() ?? "a_0";
+        case "a_1":
+          if (parameters?.["a_1"] === "") return "a_1";
+          return parameters?.["a_1"]?.toString() ?? "a_1";
+        case "a_2":
+          if (parameters?.["a_2"] === "") return "a_2";
+          return parameters?.["a_2"]?.toString() ?? "a_2";
+        case "a_3":
+          if (parameters?.["a_3"] === "") return "a_3";
+          return parameters?.["a_3"]?.toString() ?? "a_3";
+        case "a_4":
+          if (parameters?.["a_4"] === "") return "a_4";
+          return parameters?.["a_4"]?.toString() ?? "a_4";
+        case "a_5":
+          if (parameters?.["a_5"] === "") return "a_5";
+          return parameters?.["a_5"]?.toString() ?? "a_5";
+        case "a_6":
+          if (parameters?.["a_6"] === "") return "a_6";
+          return parameters?.["a_6"]?.toString() ?? "a_6";
         case "a":
-          if (parameters?.["a"] === "") return isModified ? "1" : "a";
+          if (parameters?.["a"] === "") return "a";
           return parameters?.["a"]?.toString() ?? "a";
         case "b":
-          if (parameters?.["b"] === "") return isModified ? "1" : "b";
+          if (parameters?.["b"] === "") return "b";
           return parameters?.["b"]?.toString() ?? "b";
         case "c":
-          if (parameters?.["c"] === "") return isModified ? "1" : "c";
+          if (parameters?.["c"] === "") return "c";
           return parameters?.["c"]?.toString() ?? "c";
         case "d":
-          if (parameters?.["d"] === "") return isModified ? "1" : "d";
+          if (parameters?.["d"] === "") return "d";
           return parameters?.["d"]?.toString() ?? "d";
         case "e":
-          if (parameters?.["e"] === "") return isModified ? "1" : "e";
+          if (parameters?.["e"] === "") return "e";
           return parameters?.["e"]?.toString() ?? "e";
         case "f":
-          if (parameters?.["f"] === "") return isModified ? "1" : "f";
+          if (parameters?.["f"] === "") return "f";
           return parameters?.["f"]?.toString() ?? "f";
         default:
           return match;

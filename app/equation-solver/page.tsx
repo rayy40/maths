@@ -14,25 +14,32 @@ import MathCalculator from "@/components/MathCalculator";
 import ToggleSwtich from "@/components/ToggleSwtich";
 import { FaRegCircleQuestion } from "react-icons/fa6";
 import Help from "@/components/Help";
+import IncreaseDecreaseCount from "@/components/IncreaseDecreaseCount";
+import InputValues from "@/components/InputValues";
 
 export default function EquationSolver() {
-  const { getRoots } = useSolveEquation();
   let solutionContainerRef = useRef<HTMLDivElement | null>(null);
+  const { getRoots } = useSolveEquation();
+  const [variables, setVariables] = useState(4);
   const [activeInput, setActiveInput] = useState("");
-  const [isAdvancedCalcVisible, setIsAdvancedCalcVisible] = useState(false);
+  const [advancedExp, setAdvancedExp] = useState("");
+  const [equations, setEquations] = useState([...equation]);
   const [isHelpVisible, setIsHelpVisible] = useState(false);
   const [selectedParam, setSelectedParam] = useState("quadratic");
+  const [polynomialExpression, setPolynomialExpression] = useState("");
+  const [isAdvancedCalcVisible, setIsAdvancedCalcVisible] = useState(false);
+  const [inputValue, setInputValue] = useState<{ [key: string]: string }>({});
   const [isInputError, setIsInputError] = useState<{ [key: string]: boolean }>(
     {}
   );
-  const [advancedExp, setAdvancedExp] = useState("");
-  const [inputValue, setInputValue] = useState<{ [key: string]: string }>({
-    a: "",
-  });
 
-  let selectedEquation = equation.find(
+  let selectedEquation = equations.find(
     (eq) => eq.name.toLowerCase() === selectedParam
   );
+
+  useEffect(() => {
+    setInputValue(selectedEquation?.parameters!);
+  }, [selectedEquation]);
 
   let items = useMemo(
     () =>
@@ -42,149 +49,144 @@ export default function EquationSolver() {
     [selectedParam]
   );
 
-  const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    variable: string
-  ) => {
-    const { value } = event.target;
-    setActiveInput(variable);
-
-    if (
-      !isNaN(Number(value)) ||
-      value === "-" ||
-      value === "." ||
-      value === "\\sqrt{}"
-    ) {
-      setInputValue((prev) => ({
-        ...prev,
-        [variable]: value,
-      }));
-      setIsInputError((prev) => ({
-        ...prev,
-        [variable]: false,
-      }));
-    } else {
-      setIsInputError((prev) => ({
-        ...prev,
-        [variable]: true,
-      }));
-    }
-  };
-
   let eq = useMemo(() => {
     return replaceVariables(
       inputValue,
-      selectedEquation?.renderFormula!,
-      false
+      polynomialExpression.length > 0
+        ? polynomialExpression
+        : selectedEquation?.renderFormula!
     );
-  }, [inputValue, selectedEquation]);
-
-  const handleNumberClick = (value: string) => {
-    if (
-      !isNaN(Number(value)) ||
-      value === "-" ||
-      value === "." ||
-      value === "\\sqrt{}"
-    ) {
-      if (value === "\\sqrt{}") {
-        setInputValue((prev) => ({
-          ...prev,
-          [activeInput]: prev[activeInput] ? prev[activeInput] + value : value,
-        }));
-      } else {
-        setInputValue((prev) => ({
-          ...prev,
-          [activeInput]: prev[activeInput] ? prev[activeInput] + value : value,
-        }));
-      }
-      setIsInputError((prev) => ({
-        ...prev,
-        [activeInput]: false,
-      }));
-    } else {
-      setIsInputError((prev) => ({
-        ...prev,
-        [activeInput]: true,
-      }));
-    }
-  };
-
-  const handleDeleteClick = () => {
-    setInputValue((prev) => ({
-      ...prev,
-      [activeInput]: prev[activeInput]?.slice(0, -1) || "",
-    }));
-  };
+  }, [inputValue, selectedEquation, polynomialExpression]);
 
   const handleChangedExp = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setAdvancedExp(value);
   };
 
-  const hanldeArrowClick = (direction: string) => {
-    const keys = Object.keys(selectedEquation?.parameters!);
-    const currentIndex = keys.indexOf(activeInput);
-    let newIndex = 0;
+  const handleSubmit = () => {
+    const keysWithEmptyValue = Object.keys(inputValue).filter(
+      (key) => inputValue[key] === ""
+    );
 
-    if (direction === "down") {
-      newIndex = (currentIndex + 1) % keys.length;
-    } else if (direction === "up") {
-      newIndex = (currentIndex - 1 + keys.length) % keys.length;
+    if (keysWithEmptyValue.length > 0) {
+      keysWithEmptyValue?.map((key) => {
+        setIsInputError((prev) => ({
+          ...prev,
+          [key]: true,
+        }));
+      });
+      return;
     }
 
-    const newInput = keys[newIndex];
-    setActiveInput(newInput);
-    document.getElementById(newInput)?.focus();
-  };
-
-  const handleSubmit = () => {
     if (solutionContainerRef.current) {
       solutionContainerRef.current.style.display = "block";
 
       scrollToContainer(solutionContainerRef);
     }
 
-    let eq = replaceVariables(
-      inputValue,
-      selectedEquation?.renderFormula!,
-      true
+    if (!isAdvancedCalcVisible) {
+      if (eq) {
+        getRoots({ equation: eq });
+      }
+    } else {
+      if (advancedExp) {
+        getRoots({ equation: advancedExp });
+      }
+    }
+
+    setInputValue(selectedEquation?.parameters!);
+  };
+
+  const renderEquation = (degree: number) => {
+    let expression = "";
+    let newParameters: { [key: string]: string } = {};
+
+    for (let i = degree; i >= 0; i--) {
+      if (i === degree) {
+        expression += `a_${i}x^${i}`;
+      } else {
+        if (i === 0) {
+          expression += ` + a_${i}`;
+        } else if (i === 1) {
+          expression += ` + a_${i}x`;
+        } else {
+          expression += ` + a_${i}x^${i}`;
+        }
+      }
+      newParameters[`a_${i}`] = "";
+    }
+
+    expression += ` = 0`;
+
+    setPolynomialExpression(expression);
+
+    updatePolynomialParameters(newParameters);
+  };
+
+  const updatePolynomialParameters = (newParameters: {
+    [key: string]: string;
+  }) => {
+    const updatedEquation = equation.map((eq) =>
+      eq.name === "polynomial" ? { ...eq, parameters: newParameters } : eq
     );
 
-    if (eq) {
-      getRoots({ equation: eq });
-    }
+    setEquations(updatedEquation);
   };
 
   return (
     <>
-      <div
-        style={{ paddingBottom: isAdvancedCalcVisible ? "5.5em" : "7em" }}
-        className={styles.page_container}
-      >
-        <div className={styles.header_container}>
-          <div className={styles.header_wrapper}>
-            <h2 className={styles.title}>Equation Solver</h2>
+      <div className="page_container">
+        <div className="header_container">
+          <div className="header_wrapper">
+            <h2 className="title">Equation Solver</h2>
             <DropDown
               selectedParam={selectedParam}
               setSelectedParam={setSelectedParam}
               items={items}
+              setInputValue={setInputValue}
+              setPolynomialExpression={setPolynomialExpression}
+            />
+            <div
+              style={{
+                paddingTop: "1.25em",
+                visibility:
+                  selectedParam !== "polynomial" ? "hidden" : "visible",
+              }}
+            >
+              <IncreaseDecreaseCount
+                label={"Degree"}
+                setCount={setVariables}
+                setInputValue={setInputValue}
+                count={variables}
+                handleRenderingEquation={renderEquation}
+              />
+            </div>
+          </div>
+          <div className="toggle_switch_wrapper">
+            <ToggleSwtich
+              label={"Advanced"}
+              setToggle={setIsAdvancedCalcVisible}
             />
           </div>
-          <div className={styles.toggle_switch_wrapper}>
-            <p>Advanced Calculator: </p>
-            <ToggleSwtich setIsAdvancedCalcVisible={setIsAdvancedCalcVisible} />
-          </div>
         </div>
-        <div className={styles.equation_container}>
+        <div className="equation_container">
           {isAdvancedCalcVisible ? (
             <BlockMath>{advancedExp}</BlockMath>
           ) : (
-            <BlockMath math={eq ?? selectedEquation?.renderFormula!} />
+            <BlockMath>
+              {eq ??
+                (polynomialExpression.length > 0
+                  ? polynomialExpression
+                  : selectedEquation?.renderFormula!)}
+            </BlockMath>
           )}
         </div>
         <div
-          style={{ flexDirection: isAdvancedCalcVisible ? "column" : "row" }}
-          className={styles.input_container}
+          style={{
+            flexDirection: isAdvancedCalcVisible ? "column" : "row",
+            alignItems: isAdvancedCalcVisible ? "center" : "flex-start",
+          }}
+          className={styles.section}
         >
           {isAdvancedCalcVisible ? (
             <>
@@ -201,67 +203,37 @@ export default function EquationSolver() {
             </>
           ) : (
             <>
-              <div className={styles.input_section_wrapper}>
-                <h3 className={styles.sub_title}>Input:</h3>
-                <div className={styles.input_wrapper}>
+              <div className="input_wrapper">
+                <h3 className="sub_title">Input:</h3>
+                <div className="input_values_container">
                   {selectedEquation &&
                     Object.keys(selectedEquation?.parameters).map(
                       (variable, i) => (
-                        <div key={i} className={styles.input_container}>
-                          <h2
-                            className={`${styles.expression} ${
-                              isInputError?.[variable] &&
-                              styles.expression_error
-                            }`}
-                          >
-                            <InlineMath math={variable} />
-                          </h2>
-                          <div className={styles.input_field_wrapper}>
-                            <input
-                              id={variable}
-                              autoComplete={"off"}
-                              onClick={() => setActiveInput(variable)}
-                              onChange={(e) => handleInputChange(e, variable)}
-                              value={inputValue?.[variable]}
-                              className={`${styles.input} ${
-                                isInputError?.[variable] && styles.input_error
-                              }`}
-                              type="text"
-                              placeholder="Enter value"
-                            />
-                          </div>
-                        </div>
+                        <InputValues
+                          key={i}
+                          variable={variable}
+                          inputValue={inputValue}
+                          isInputError={isInputError}
+                          setIsInputError={setIsInputError}
+                          setInputValue={setInputValue}
+                          setActiveInput={setActiveInput}
+                        />
                       )
                     )}
                 </div>
               </div>
-              <div className={styles.input_section_wrapper}>
-                <h3 style={{ textAlign: "right" }} className={styles.sub_title}>
+              <div>
+                <h3 style={{ textAlign: "right" }} className="sub_title">
                   Number Pad:
                 </h3>
-                <div className={styles.buttons_wrapper}>
-                  <NumberPad handleNumberClick={handleNumberClick} />
-                  <div className={styles.numpad_container}>
-                    <button
-                      onClick={() => hanldeArrowClick("up")}
-                      className={styles.numpad}
-                    >
-                      <FaArrowUpLong />
-                    </button>
-                    <button
-                      onClick={() => hanldeArrowClick("down")}
-                      className={styles.numpad}
-                    >
-                      <FaArrowDownLong />
-                    </button>
-                    <button
-                      onClick={handleDeleteClick}
-                      className={styles.numpad}
-                    >
-                      <FaDeleteLeft />
-                    </button>
-                  </div>
-                </div>
+                <NumberPad
+                  type={"equation"}
+                  activeInput={activeInput}
+                  selectedObject={selectedEquation?.parameters!}
+                  setActiveInput={setActiveInput}
+                  setInputValue={setInputValue}
+                  setIsInputError={setIsInputError}
+                />
               </div>
             </>
           )}
@@ -269,7 +241,7 @@ export default function EquationSolver() {
         <div className={styles.submit_button_wrapper}>
           <button
             onClick={handleSubmit}
-            className={`submit_button ${styles.btn}`}
+            className={`submit_button ${styles.submit_btn_modified}`}
           >
             Submit
           </button>
@@ -278,7 +250,7 @@ export default function EquationSolver() {
               setInputValue({});
               setAdvancedExp("");
             }}
-            className={`submit_button ${styles.btn}`}
+            className={`submit_button ${styles.submit_btn_modified}`}
           >
             Reset
           </button>
@@ -298,7 +270,7 @@ export default function EquationSolver() {
         )}
       </div>
       <div ref={solutionContainerRef} className={styles.page_solution}>
-        <h3 style={{ fontSize: "1.15rem" }} className={styles.sub_title}>
+        <h3 style={{ fontSize: "1.15rem" }} className="sub_title">
           Solution:
         </h3>
         <div className={styles.solution_wrapper}>

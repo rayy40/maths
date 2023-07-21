@@ -20,7 +20,7 @@
   display: block;
   width: 200%;
   margin-left: -100%;
-  transition: margin 0.3s ease-in 0s;
+  transition: margin 0.2s ease-in 0s;
 }
 
 .inner:before,
@@ -35,21 +35,6 @@
   box-sizing: border-box;
 }
 
-.inner:before {
-  content: "ON";
-  padding-left: 10px;
-  background-color: #5f6368;
-  color: #333;
-}
-
-.inner:after {
-  content: "OFF";
-  padding-right: 10px;
-  background-color: #34373b;
-  color: #9aa0a6;
-  text-align: right;
-}
-
 .switch_handler {
   position: absolute;
   display: block;
@@ -57,11 +42,26 @@
   height: 21px;
   margin: 5px;
   background: #9aa0a6;
-  top: 8.2em;
-  right: 45px;
+  top: 4em;
+  right: 18px;
   border: 0 solid #bbb;
   border-radius: 20px;
   transition: all 0.3s ease-in 0s;
+}
+
+.inner:before {
+  content: "";
+  width: 50px;
+  background-color: #5f6368;
+  color: #333;
+}
+
+.inner:after {
+  content: "";
+  padding-right: 0px;
+  background-color: #34373b;
+  color: #9aa0a6;
+  text-align: right;
 }
 
 .checkbox:checked + .label .inner {

@@ -1,17 +1,19 @@
 "use client";
 
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo, useEffect } from "react";
 import styles from "@/styles/shape.module.css";
-import { formula } from "@/lib/formulas";
+import { Formulas, formula } from "@/lib/formulas";
 import {
   calculateResult,
   countVariables,
   modifyLatexExpression,
   scrollToContainer,
 } from "@/lib/Helper";
-import InputVariable from "@/components/InputVariable";
 import DropDown from "@/components/DropDown";
 import { BlockMath } from "react-katex";
+import ToggleSwtich from "@/components/ToggleSwtich";
+import InputValues from "@/components/InputValues";
+import NumberPad from "@/components/NumberPad";
 
 type Params = {
   params: { shape: string };
@@ -19,29 +21,72 @@ type Params = {
 
 export default function ShapePage({ params: { shape } }: Params) {
   let solutionContainerRef = useRef<HTMLDivElement | null>(null);
+  const [activeInput, setActiveInput] = useState("");
   const [selectedParam, setSelectedParam] = useState("area");
   const [result, setResult] = useState({ value: 0, exp: "" });
   const [modifiedLatexExp, setModifiedLatexExp] = useState("");
-  const [parameters, setParameters] = useState<{ [key: string]: number }>({});
+  const [isNumberPadVisible, setIsNumberPadVisible] = useState(false);
   const [inputValues, setInputValues] = useState<{ [key: string]: string }>({});
+  const [isInputError, setIsInputError] = useState<{ [key: string]: boolean }>(
+    {}
+  );
 
-  let selectedShape = formula.find((s) => s.name === decodeURIComponent(shape));
-  let items = useMemo(
-    () =>
-      Object.keys(selectedShape?.renderFormula!).filter(
-        (key) => key.toLowerCase() !== selectedParam
-      ),
+  const selectedShape = formula.find(
+    (s) => s.name === decodeURIComponent(shape)
+  );
+
+  const filterKeys = (selectedShape: Formulas, selectedParam: string) => {
+    const renderFormula = selectedShape?.renderFormula;
+    if (!renderFormula) return [];
+
+    return Object.keys(renderFormula).filter(
+      (key) => key.toLowerCase() !== selectedParam
+    );
+  };
+
+  const { variables } = useMemo(() => {
+    const renderFormula = selectedShape?.renderFormula?.[selectedParam];
+    return countVariables(renderFormula);
+  }, [selectedShape, selectedParam]);
+
+  const items = useMemo(
+    () => filterKeys(selectedShape as Formulas, selectedParam),
     [selectedShape, selectedParam]
   );
-  let { variables } = countVariables(
-    selectedShape?.renderFormula?.[selectedParam]
-  );
 
-  const handleSubmitButton = () => {
+  useEffect(() => {
+    const initialInputValues = variables.reduce(
+      (acc, variable) => ({ ...acc, [variable]: "" }),
+      {}
+    );
+    setInputValues(initialInputValues);
+  }, [variables]);
+
+  const handleSubmit = () => {
+    const keysWithEmptyValue = Object.keys(inputValues).filter(
+      (key) => inputValues[key] === ""
+    );
+
+    if (keysWithEmptyValue.length > 0) {
+      keysWithEmptyValue?.map((key) => {
+        setIsInputError((prev) => ({
+          ...prev,
+          [key]: true,
+        }));
+      });
+      return;
+    }
+
+    if (solutionContainerRef.current) {
+      solutionContainerRef.current.style.display = "block";
+
+      scrollToContainer(solutionContainerRef);
+    }
+
     const { value, exp } = calculateResult(
       variables,
       selectedShape?.calculateFormula?.[selectedParam]!,
-      parameters,
+      inputValues,
       selectedShape?.renderFormula?.[selectedParam]!
     );
 
@@ -49,59 +94,98 @@ export default function ShapePage({ params: { shape } }: Params) {
 
     setModifiedLatexExp(
       modifyLatexExpression(
-        parameters,
+        inputValues,
         selectedShape?.modifiedFormula?.[selectedParam]!
       )
     );
 
-    setInputValues({});
+    const initialInputValues = variables.reduce(
+      (acc, variable) => ({ ...acc, [variable]: "" }),
+      {}
+    );
 
-    if (solutionContainerRef.current) {
-      solutionContainerRef.current.style.display = "block";
-
-      scrollToContainer(solutionContainerRef);
-    }
+    setInputValues(initialInputValues);
   };
 
   return (
     <>
-      <div className={styles.shape_container}>
-        <div className={styles.header}>
-          <h2 className={styles.title}>{selectedShape?.name}</h2>
-          <DropDown
-            selectedParam={selectedParam}
-            setSelectedParam={setSelectedParam}
-            items={items}
-          />
-          <h2 className={styles.formula}>
-            <BlockMath math={selectedShape?.renderFormula?.[selectedParam]!} />
-          </h2>
-        </div>
-        <div className={styles.content}>
-          <div className={styles.input_container}>
-            {variables.map((variable, i) => (
-              <InputVariable
-                setParameters={setParameters}
-                name={selectedShape?.parameters?.[variable]}
-                variable={variable}
-                key={i}
-                inputValue={inputValues[variable] || ""}
-                setInputValue={setInputValues}
-              />
-            ))}
+      <div className="page_container">
+        <div className="header_container">
+          <div className="header_wrapper">
+            <h2 className="title">{selectedShape?.name}</h2>
+            <DropDown
+              selectedParam={selectedParam}
+              setSelectedParam={setSelectedParam}
+              items={items}
+            />
           </div>
-          <div className={styles.figure}>{selectedShape?.image}</div>
+          <div className="toggle_switch_wrapper">
+            <ToggleSwtich
+              label={"Number Pad"}
+              setToggle={setIsNumberPadVisible}
+            />
+          </div>
         </div>
-        <div className={styles.submit_container}>
-          <button onClick={handleSubmitButton} className="submit_button">
+        <div
+          style={{ justifyContent: "flex-start" }}
+          className="equation_container"
+        >
+          <BlockMath math={selectedShape?.renderFormula?.[selectedParam]!} />
+        </div>
+        <div className={styles.section}>
+          <div className="input_wrapper">
+            <h3 className="sub_title">Input:</h3>
+            <div className="input_values_container">
+              {variables.map((variable, i) => (
+                <InputValues
+                  key={i}
+                  variable={variable}
+                  isInputError={isInputError}
+                  inputValue={inputValues}
+                  setIsInputError={setIsInputError}
+                  setInputValue={setInputValues}
+                  setActiveInput={setActiveInput}
+                />
+              ))}
+            </div>
+          </div>
+          {isNumberPadVisible ? (
+            <div>
+              <h3 style={{ textAlign: "right" }} className="sub_title">
+                Number Pad:
+              </h3>
+              <NumberPad
+                type={"shape"}
+                activeInput={activeInput}
+                selectedObject={selectedShape?.parameters!}
+                setActiveInput={setActiveInput}
+                setInputValue={setInputValues}
+                setIsInputError={setIsInputError}
+              />
+            </div>
+          ) : (
+            <div className={styles.figure}>{selectedShape?.image}</div>
+          )}
+        </div>
+        <div className={styles.submit_button_wrapper}>
+          <button
+            onClick={handleSubmit}
+            className={`submit_button ${styles.submit_btn_modified}`}
+          >
             Submit
+          </button>
+          <button
+            onClick={() => setInputValues({})}
+            className={`submit_button ${styles.submit_btn_modified}`}
+          >
+            Reset
           </button>
         </div>
       </div>
       <div ref={solutionContainerRef} className={styles.solution_container}>
         <h2
           style={{ paddingBottom: "1.25em", fontSize: "1.25em" }}
-          className={styles.title}
+          className="title"
         >
           Solution:
         </h2>

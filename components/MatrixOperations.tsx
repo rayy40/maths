@@ -88,8 +88,8 @@ export default function MatrixOperations({ handleScroll }: Props) {
               <button
                 key={buttonLabel}
                 onClick={() => handleMatrixChange(buttonLabel)}
-                className={`${styles.operation} ${
-                  buttonLabel === exp && styles.operation_disabled
+                className={`select_button ${
+                  buttonLabel === exp && "select_button_disabled"
                 }`}
               >
                 <InlineMath math={buttonLabel} />
@@ -112,10 +112,10 @@ export default function MatrixOperations({ handleScroll }: Props) {
                     ? handleMatrixEquation(buttonLabel)
                     : handleOperationChange(buttonLabel)
                 }
-                className={`${styles.operation} ${
-                  buttonLabel?.exp === exp && styles.operation_disabled
+                className={`select_button ${
+                  buttonLabel?.exp === exp && "select_button_disabled"
                 } ${
-                  [8, 9, 10, 11].includes(index) && styles.operation_modified
+                  [8, 9, 10, 11].includes(index) && "select_button_modified"
                 }`}
               >
                 <InlineMath math={buttonLabel.exp} />
@@ -140,9 +140,9 @@ export default function MatrixOperations({ handleScroll }: Props) {
                   lineHeight: "1.5",
                   height: "60px",
                 }}
-                className={`${styles.operation} ${
-                  buttonLabel?.exp === exp && styles.operation_disabled
-                } ${styles.operation_modified}`}
+                className={`select_button select_button_modified ${
+                  buttonLabel?.exp === exp && "select_button_disabled"
+                }`}
               >
                 {buttonLabel.exp.split(" ").map((word, i) => (
                   <React.Fragment key={i}>

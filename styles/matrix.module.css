@@ -1,19 +1,8 @@
-.page_container {
-  position: relative;
-  margin: 0 auto;
-  min-height: 100vh;
-  padding: 7.5em 0 0;
-  width: 80%;
-  max-width: 1000px;
-  display: flex;
-  gap: 3em;
-  border-bottom: 1px solid #5f6368;
-}
-
 .section {
   flex: 0.5;
   display: flex;
-  gap: 5em;
+  justify-content: space-between;
+  gap: 2em;
   flex-direction: column;
 }
 
@@ -29,62 +18,18 @@
   color: #9aa0a6;
   text-transform: capitalize;
   font-weight: 500;
-  padding-bottom: 2em;
+  padding-bottom: 1.25em;
 }
 
 .order_wrapper {
   display: flex;
   flex-direction: column;
-  gap: 1em;
-}
-
-.order_container {
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-}
-
-.plus_minus_icon {
-  opacity: 1;
-  pointer-events: initial;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  outline: none;
-  border: 1px solid #34373b;
-  color: #bdc1c6;
-  background: #34373b;
-  border-radius: 2.5px;
-  font-size: 0.725rem;
-  cursor: pointer;
-  box-shadow: inset 0px 0px 5px -2px rgba(64, 68, 72, 1);
-  transition: background 0.25ms cubic-bezier(0.19, 1, 0.22, 1);
-}
-
-.plus_minus_icon:hover {
-  background: #4c5056;
-}
-
-.plus_minus_icon_disabled {
-  pointer-events: none;
-  opacity: 0.5;
-}
-
-.order_input {
-  height: 30px;
-  width: 35px;
-  text-align: center;
-  outline: none !important;
-  border: none !important;
-  border-bottom: 1px solid #5f6368 !important;
+  gap: 0.65em;
+  color: #9aa0a6;
 }
 
 .matrix_container {
-  margin-top: -1em;
   position: relative;
-  padding-bottom: 2.5em;
   display: flex;
   height: 100%;
   gap: 1.5em;
@@ -108,6 +53,14 @@
 .matrix_wrapper_error {
   border-left: 1px solid #b43a4e;
   border-right: 1px solid #b43a4e;
+}
+
+.types_wrapper {
+  max-width: 320px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25em;
+  align-items: center;
 }
 
 .input_error {
@@ -138,7 +91,7 @@
   align-items: center;
   justify-content: space-around;
   position: absolute;
-  bottom: 5em;
+  bottom: 0em;
 }
 
 .btn {
@@ -154,33 +107,6 @@
 
 .btn:hover {
   background: #585d63;
-}
-
-.operation {
-  font-size: 0.875rem;
-  pointer-events: initial;
-  width: 50px;
-  height: 50px;
-  border: 1px solid #34373b;
-  color: #bdc1c6;
-  background: #34373b;
-  border-radius: 4px;
-  cursor: pointer;
-  box-shadow: inset 0px 0px 5px -2px rgba(64, 68, 72, 1);
-}
-
-.operation_modified {
-  width: 104px;
-  flex-wrap: wrap;
-}
-
-.operation:hover {
-  background-color: #404448;
-}
-
-.operation_disabled {
-  pointer-events: none;
-  opacity: 0.5;
 }
 
 .operations_wrapper {

@@ -44,25 +44,25 @@ export default function MatrixTypes({
   };
 
   return (
-    <div className={styles.operations_wrapper}>
+    <div className={styles.types_wrapper}>
       <button
         onClick={fillInWithZeros}
-        style={{ width: "50%" }}
-        className={styles.operation}
+        style={{ width: "120px" }}
+        className="select_button"
       >
         Fill in with 0s
       </button>
       <button
         onClick={fillDiagnollywithOnes}
-        style={{ width: "50%" }}
-        className={styles.operation}
+        style={{ width: "120px" }}
+        className="select_button"
       >
         Identity matrix
       </button>
       <button
         onClick={fillWithRandomNumbers}
-        style={{ width: "50%" }}
-        className={styles.operation}
+        style={{ width: "120px" }}
+        className="select_button"
       >
         Random matrix
       </button>
