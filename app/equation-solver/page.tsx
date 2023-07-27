@@ -4,9 +4,8 @@ import React, { useState, useMemo, useRef, useEffect } from "react";
 import styles from "@/styles/equation-solver.module.css";
 import DropDown from "@/components/DropDown";
 import { equation } from "@/lib/equations";
-import { BlockMath, InlineMath } from "react-katex";
+import { BlockMath } from "react-katex";
 import NumberPad from "@/components/NumberPad";
-import { FaArrowUpLong, FaArrowDownLong, FaDeleteLeft } from "react-icons/fa6";
 import { replaceVariables, scrollToContainer } from "@/lib/Helper";
 import useSolveEquation from "@/lib/useSolveEquation";
 import RenderEquationSolution from "@/components/RenderEquationSolution";
@@ -157,6 +156,7 @@ export default function EquationSolver() {
                 label={"Degree"}
                 setCount={setVariables}
                 setInputValue={setInputValue}
+                maxCount={6}
                 count={variables}
                 handleRenderingEquation={renderEquation}
               />

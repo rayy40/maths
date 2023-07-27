@@ -3,7 +3,6 @@
 import React, { useEffect, useMemo, useState, useRef } from "react";
 import Matrix from "@/components/Matrix";
 import styles from "@/styles/matrix.module.css";
-import { FaPlus, FaMinus } from "react-icons/fa";
 import { InlineMath } from "react-katex";
 import RenderMatrix from "@/components/RenderMatrix";
 import { scrollToContainer } from "@/lib/Helper";
@@ -11,6 +10,8 @@ import { useMatrixContext } from "@/context/MatrixContext";
 import MatrixTypes from "@/components/MatrixTypes";
 import MatrixOperations from "@/components/MatrixOperations";
 import RenderMatrixCalculation from "@/components/RenderMatrixCalculation";
+import IncreaseDecreaseCount from "@/components/IncreaseDecreaseCount";
+import NumberPad from "@/components/NumberPad";
 
 type Props = {};
 
@@ -20,8 +21,10 @@ export default function MatrixPage({}: Props) {
   const [rows, setRows] = useState(2);
   const [columns, setColumns] = useState(2);
   const [matrix, setMatrix] = useState<string[][]>([]);
+  const [index, setIndex] = useState({ row: 0, column: 0 });
+  const [isMatrixError, setIsMatrixError] = useState(false);
   const [declaration, setDeclaration] = useState<string>("A");
-  const { setMatrixHistory, matrixHistory } = useMatrixContext();
+  const { setMatrixHistory } = useMatrixContext();
 
   const createMatrix = () => {
     const newMatrix = [];
@@ -80,69 +83,43 @@ export default function MatrixPage({}: Props) {
 
   return (
     <>
-      <div className={styles.page_container}>
+      <div style={{ flexDirection: "row" }} className="page_container">
         <div className={styles.section}>
           <div className={styles.header}>
-            <h2 className={styles.title}>Matrix Calculator</h2>
+            <h2 className="title">Matrix Calculator</h2>
             <div className={styles.order_wrapper}>
-              <div className={styles.order_container}>
-                <p style={{ width: "65px", marginRight: "1.25em" }}>Row: </p>
-                <button
-                  onClick={() => setRows((prev) => prev - 1)}
-                  className={`${styles.plus_minus_icon} ${
-                    rows <= 2 ? styles.plus_minus_icon_disabled : ""
-                  }`}
-                >
-                  <FaMinus />
-                </button>
-                <input
-                  onChange={(e) => setRows(parseInt(e.target.value))}
-                  className={styles.order_input}
-                  value={rows}
-                  type="text"
-                />
-                <button
-                  onClick={() => setRows((prev) => prev + 1)}
-                  className={`${styles.plus_minus_icon} ${
-                    rows >= 6 ? styles.plus_minus_icon_disabled : ""
-                  }`}
-                >
-                  <FaPlus />
-                </button>
-              </div>
-              <div className={styles.order_container}>
-                <p style={{ width: "65px", marginRight: "1.25em" }}>Column: </p>
-                <button
-                  onClick={() => setColumns((prev) => prev - 1)}
-                  className={`${styles.plus_minus_icon} ${
-                    columns <= 2 ? styles.plus_minus_icon_disabled : ""
-                  }`}
-                >
-                  <FaMinus />
-                </button>
-                <input
-                  onChange={(e) => setColumns(parseInt(e.target.value))}
-                  className={styles.order_input}
-                  value={columns}
-                  type="text"
-                />
-                <button
-                  onClick={() => setColumns((prev) => prev + 1)}
-                  className={`${styles.plus_minus_icon} ${
-                    columns >= 6 ? styles.plus_minus_icon_disabled : ""
-                  }`}
-                >
-                  <FaPlus />
-                </button>
-              </div>
+              <IncreaseDecreaseCount
+                label={"Row"}
+                setCount={setRows}
+                count={rows}
+                maxCount={6}
+              />
+              <IncreaseDecreaseCount
+                label={"Column"}
+                setCount={setColumns}
+                count={columns}
+                maxCount={6}
+              />
             </div>
           </div>
           <div className={styles.types_container}>
-            <h3 className={styles.sub_title}>Types:</h3>
+            <h3 className="sub_title">Types:</h3>
             <MatrixTypes
               matrix={matrix}
               setMatrix={setMatrix}
               setDeclaration={setDeclaration}
+            />
+          </div>
+          <div>
+            <h3 className="sub_title">Number pad:</h3>
+            <NumberPad
+              type={"matrix"}
+              index={index}
+              maxRow={rows - 1}
+              maxColumn={columns - 1}
+              setIndex={setIndex}
+              setMatrixValue={setMatrix}
+              setIsMatrixError={setIsMatrixError}
             />
           </div>
         </div>
@@ -152,7 +129,13 @@ export default function MatrixPage({}: Props) {
               <InlineMath math={declaration} />
               <InlineMath math="=" />
             </div>
-            <Matrix matrix={matrix} setMatrix={setMatrix} />
+            <Matrix
+              matrix={matrix}
+              setIndex={setIndex}
+              setMatrix={setMatrix}
+              isMatrixError={isMatrixError}
+              setIsMatrixError={setIsMatrixError}
+            />
             <div className={styles.button_wrapper}>
               <button
                 onClick={handleSubmit}
