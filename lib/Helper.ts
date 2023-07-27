@@ -144,6 +144,10 @@ export const replaceVariables = (
     pattern = /a_\d+(?![^=]*\b[x|y]\b)/g;
   }
 
+  if (equation.includes("y")) {
+    pattern = /([abcde]_[1-6])/g;
+  }
+
   equation = equation.replace(pattern, (match: string) => {
     if (!match.startsWith("\\")) {
       switch (match) {
@@ -168,6 +172,63 @@ export const replaceVariables = (
         case "a_6":
           if (parameters?.["a_6"] === "") return "a_6";
           return parameters?.["a_6"]?.toString() ?? "a_6";
+        case "a_2":
+          if (parameters?.["a_2"] === "") return "a_2";
+          return parameters?.["a_2"]?.toString() ?? "a_2";
+        case "a_3":
+          if (parameters?.["a_3"] === "") return "a_3";
+          return parameters?.["a_3"]?.toString() ?? "a_3";
+        case "a_4":
+          if (parameters?.["a_4"] === "") return "a_4";
+          return parameters?.["a_4"]?.toString() ?? "a_4";
+        case "b_1":
+          if (parameters?.["b_1"] === "") return "b_1";
+          return parameters?.["b_1"]?.toString() ?? "b_1";
+        case "b_2":
+          if (parameters?.["b_2"] === "") return "b_2";
+          return parameters?.["b_2"]?.toString() ?? "b_2";
+        case "b_3":
+          if (parameters?.["b_3"] === "") return "b_3";
+          return parameters?.["b_3"]?.toString() ?? "b_3";
+        case "b_4":
+          if (parameters?.["b_4"] === "") return "b_4";
+          return parameters?.["b_4"]?.toString() ?? "b_4";
+        case "c_1":
+          if (parameters?.["c_1"] === "") return "c_1";
+          return parameters?.["c_1"]?.toString() ?? "c_1";
+        case "c_2":
+          if (parameters?.["c_2"] === "") return "c_2";
+          return parameters?.["c_2"]?.toString() ?? "c_2";
+        case "c_3":
+          if (parameters?.["c_3"] === "") return "c_3";
+          return parameters?.["c_3"]?.toString() ?? "c_3";
+        case "c_4":
+          if (parameters?.["c_4"] === "") return "c_4";
+          return parameters?.["c_4"]?.toString() ?? "c_4";
+        case "d_1":
+          if (parameters?.["d_1"] === "") return "d_1";
+          return parameters?.["d_1"]?.toString() ?? "d_1";
+        case "d_2":
+          if (parameters?.["d_2"] === "") return "d_2";
+          return parameters?.["d_2"]?.toString() ?? "d_2";
+        case "d_3":
+          if (parameters?.["d_3"] === "") return "d_3";
+          return parameters?.["d_3"]?.toString() ?? "d_3";
+        case "d_4":
+          if (parameters?.["d_4"] === "") return "d_4";
+          return parameters?.["d_4"]?.toString() ?? "d_4";
+        case "e_1":
+          if (parameters?.["e_1"] === "") return "e_1";
+          return parameters?.["e_1"]?.toString() ?? "e_1";
+        case "e_2":
+          if (parameters?.["e_2"] === "") return "e_2";
+          return parameters?.["e_2"]?.toString() ?? "e_2";
+        case "e_3":
+          if (parameters?.["e_3"] === "") return "e_3";
+          return parameters?.["e_3"]?.toString() ?? "e_3";
+        case "e_4":
+          if (parameters?.["e_4"] === "") return "e_4";
+          return parameters?.["e_4"]?.toString() ?? "e_4";
         case "a":
           if (parameters?.["a"] === "") return "a";
           return parameters?.["a"]?.toString() ?? "a";
