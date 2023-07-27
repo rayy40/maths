@@ -18,3 +18,19 @@ export interface Equations {
   renderFormula: string;
   parameters: { [key: string]: string };
 }
+
+export interface NestedInputValues {
+  [key: string]: string;
+}
+
+export interface MultiInputValues {
+  [key: string]: NestedInputValues;
+}
+
+export interface NestedInputErrors {
+  [key: string]: boolean;
+}
+
+export interface MultiInputErrors {
+  [key: string]: NestedInputErrors;
+}
