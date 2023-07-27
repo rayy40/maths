@@ -1,28 +1,34 @@
 import React from "react";
 import styles from "@/styles/increase-decrease-count.module.css";
 import { FaMinus, FaPlus } from "react-icons/fa6";
+import { MultiInputValues } from "@/lib/types";
 
 type Props = {
   label: string;
   count: number;
+  maxCount: number;
   setCount: React.Dispatch<React.SetStateAction<number>>;
   setInputValue?: React.Dispatch<
     React.SetStateAction<{ [key: string]: string }>
   >;
+  setMultiInputValues?: React.Dispatch<React.SetStateAction<MultiInputValues>>;
   handleRenderingEquation?: (number: number) => void;
 };
 
 export default function IncreaseDecreaseCount({
   setCount,
   count,
+  maxCount,
   label,
   handleRenderingEquation,
   setInputValue,
+  setMultiInputValues,
 }: Props) {
   const handleButtonClick = (updatedCount: number) => {
     setCount(updatedCount);
     handleRenderingEquation?.(updatedCount);
     setInputValue?.({});
+    setMultiInputValues?.({});
   };
 
   return (
@@ -47,7 +53,7 @@ export default function IncreaseDecreaseCount({
       <button
         onClick={() => handleButtonClick(count + 1)}
         className={`${styles.plus_minus_icon} ${
-          count >= 6 ? styles.plus_minus_icon_disabled : ""
+          count >= maxCount ? styles.plus_minus_icon_disabled : ""
         } ${label === "Degree" && styles.plus_minus_icon_modified}`}
       >
         <FaPlus />
