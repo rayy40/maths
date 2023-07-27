@@ -1,0 +1,107 @@
+.section {
+  flex: 0.5;
+  display: flex;
+  justify-content: space-between;
+  gap: 2.5em;
+  flex-direction: column;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  gap: 0.5em;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.input_values_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.input_values {
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
+}
+
+.brackets {
+  font-size: 1.65rem;
+}
+
+.input_wrapper {
+  margin-top: 0.15em;
+}
+
+.key_wrapper {
+  font-size: 1.15rem;
+}
+
+.matrix_input {
+  width: 40px;
+  height: 30px !important;
+  padding: 0em !important;
+  font-size: 1.15rem !important;
+  text-align: center;
+  border: none !important;
+}
+
+.matrix_input_error {
+  color: #b43a4e !important;
+}
+
+.simultaneous_equation_wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 8.25em);
+  gap: 0.5em;
+  align-items: center;
+  justify-content: center;
+}
+
+.equation_wrapper {
+  font-size: 1.5rem;
+}
+
+.button_wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  position: absolute;
+  bottom: 0em;
+}
+
+.submit_btn_modified {
+  padding: 0.75em 0.25em;
+  width: 80px;
+  background: #4c5056;
+  border-color: #4c5056;
+}
+
+.submit_btn_modified:last-child {
+  background: transparent;
+}
+
+.submit_btn_modified:hover {
+  background: #585d63;
+}
+
+.page_solution {
+  display: none;
+  padding: 2em 0;
+  margin: 0 auto;
+  width: 80%;
+  max-width: 1000px;
+  border-bottom: 1px solid #5f6368;
+}
+
+.results_container {
+  padding: 0.5em 0;
+  display: flex;
+  align-items: center;
+  gap: 1.5em;
+  font-size: 1.15rem;
+}
