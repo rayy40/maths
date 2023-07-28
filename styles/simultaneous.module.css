@@ -105,3 +105,25 @@
   gap: 1.5em;
   font-size: 1.15rem;
 }
+
+@media only screen and (max-width: 767px) {
+  .section {
+    flex: unset;
+    gap: 2em;
+  }
+  .numpad_outer_wrapper {
+    display: none;
+  }
+  .simultaneous_equation_wrapper {
+    margin-top: -1em;
+    position: unset;
+    height: unset;
+    gap: 0.5em;
+  }
+  .button_wrapper {
+    bottom: 2em;
+  }
+  .results_container {
+    font-size: 1.25rem;
+  }
+}

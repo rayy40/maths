@@ -172,11 +172,12 @@ export default function SimultaneousLinearEquation() {
     getSimultaneousRoots({ equation: renderExpressions });
   };
 
-  console.log(simultaneousResult);
-
   return (
     <>
-      <div style={{ flexDirection: "row" }} className="page_container">
+      <div
+        style={{ flexDirection: window.innerWidth < 767 ? "column" : "row" }}
+        className="page_container"
+      >
         <div className={styles.section}>
           <div className={styles.header}>
             <h2 className="title">Equation Solver</h2>
@@ -253,7 +254,7 @@ export default function SimultaneousLinearEquation() {
               })}
             </div>
           </div>
-          <div>
+          <div className={styles.numpad_outer_wrapper}>
             <h3 className="sub_title">Number pad:</h3>
             <NumberPad
               type={"simultaneous"}
@@ -270,10 +271,7 @@ export default function SimultaneousLinearEquation() {
           <div className={styles.simultaneous_equation_wrapper}>
             {Object.values(renderExpressions).map((exp, index) => (
               <div key={index} className={styles.equation_wrapper}>
-                <>
-                  {console.log(renderExpressions)}
-                  <BlockMath math={exp} />
-                </>
+                <BlockMath math={exp} />
               </div>
             ))}
             <div className={styles.button_wrapper}>

@@ -50,6 +50,7 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 1.4rem;
+  overflow-x: auto;
 }
 
 .header_wrapper {
@@ -211,6 +212,20 @@ input[type="text"] {
     font-size: 14px;
   }
   ::-webkit-scrollbar {
+    display: none;
+  }
+  .page_container {
+    width: 90%;
+    gap: 5em;
+    border-bottom: 1px solid #5f6368;
+  }
+  .page_container .select_button {
+    width: 32.5% !important;
+  }
+  .select_button {
+    width: 24% !important;
+  }
+  .toggle_switch_wrapper {
     display: none;
   }
 }

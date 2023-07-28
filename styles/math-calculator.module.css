@@ -31,3 +31,9 @@
 .calculator_button:hover {
   background-color: #404448;
 }
+
+@media only screen and (max-width: 767px) {
+  .calculator_section {
+    max-width: 100%;
+  }
+}

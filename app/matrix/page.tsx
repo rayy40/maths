@@ -83,7 +83,10 @@ export default function MatrixPage({}: Props) {
 
   return (
     <>
-      <div style={{ flexDirection: "row" }} className="page_container">
+      <div
+        style={{ flexDirection: window.innerWidth < 767 ? "column" : "row" }}
+        className="page_container"
+      >
         <div className={styles.section}>
           <div className={styles.header}>
             <h2 className="title">Matrix Calculator</h2>
@@ -110,7 +113,7 @@ export default function MatrixPage({}: Props) {
               setDeclaration={setDeclaration}
             />
           </div>
-          <div>
+          <div className={styles.numpad_outer_wrapper}>
             <h3 className="sub_title">Number pad:</h3>
             <NumberPad
               type={"matrix"}

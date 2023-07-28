@@ -162,7 +162,7 @@ export default function EquationSolver() {
               />
             </div>
           </div>
-          <div className="toggle_switch_wrapper">
+          <div style={{ display: "flex" }} className="toggle_switch_wrapper">
             <ToggleSwtich
               label={"Advanced"}
               setToggle={setIsAdvancedCalcVisible}
@@ -222,7 +222,7 @@ export default function EquationSolver() {
                     )}
                 </div>
               </div>
-              <div>
+              <div className={styles.numpad_outer_wrapper}>
                 <h3 style={{ textAlign: "right" }} className="sub_title">
                   Number Pad:
                 </h3>

@@ -208,11 +208,8 @@
 }
 
 @media only screen and (max-width: 768px) {
-  .page_container {
-    padding: 5em 0 0;
-    position: relative;
-    flex-direction: column;
-    gap: 5em;
+  .numpad_outer_wrapper {
+    display: none;
   }
   .section {
     flex: 0.3 0.7;
@@ -238,9 +235,6 @@
     flex-direction: row;
     max-width: 100%;
     overflow-x: auto;
-  }
-  .page_container .operations_wrapper .operation {
-    width: 32.5% !important;
   }
   .matrix_input {
     width: 45px;
@@ -278,9 +272,6 @@
   }
   .operation_col:first-child {
     border-right: unset;
-  }
-  .page_solution .operations_wrapper .operation {
-    width: 24% !important;
   }
   .eigen_child_wrapper {
     font-size: 1.15rem;
