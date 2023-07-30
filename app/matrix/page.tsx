@@ -81,15 +81,7 @@ export default function MatrixPage() {
 
   return (
     <>
-      <div
-        style={{
-          flexDirection:
-            typeof window !== undefined && window.innerWidth < 767
-              ? "column"
-              : "row",
-        }}
-        className={`page_container ${styles.matrix_page_modified}`}
-      >
+      <div className={`page_container ${styles.matrix_page_modified}`}>
         <div className={styles.section}>
           <div className={styles.header}>
             <h2 className="title">Matrix Calculator</h2>
