@@ -84,12 +84,12 @@ export default function MatrixPage({}: Props) {
   return (
     <>
       <div
-        style={{
-          flexDirection:
-            typeof window !== undefined && window.innerWidth < 767
-              ? "column"
-              : "row",
-        }}
+        // style={{
+        //   flexDirection:
+        //     typeof window !== undefined && window.innerWidth < 767
+        //       ? "column"
+        //       : "row",
+        // }}
         className="page_container"
       >
         <div className={styles.section}>
