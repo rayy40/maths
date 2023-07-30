@@ -198,6 +198,10 @@
   width: 100%;
 }
 
+.matrix_page_modified {
+  flex-direction: row !important;
+}
+
 @media only screen and (max-width: 1024px) {
   .page_container,
   .page_calculation,
@@ -208,6 +212,9 @@
 }
 
 @media only screen and (max-width: 768px) {
+  .matrix_page_modified {
+    flex-direction: column !important;
+  }
   .numpad_outer_wrapper {
     display: none;
   }

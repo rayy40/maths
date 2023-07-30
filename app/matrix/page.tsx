@@ -13,9 +13,7 @@ import RenderMatrixCalculation from "@/components/RenderMatrixCalculation";
 import IncreaseDecreaseCount from "@/components/IncreaseDecreaseCount";
 import NumberPad from "@/components/NumberPad";
 
-type Props = {};
-
-export default function MatrixPage({}: Props) {
+export default function MatrixPage() {
   let solutionContainerRef = useRef<HTMLDivElement>(null);
   let calculationContainerRef = useRef<HTMLDivElement>(null);
   const [rows, setRows] = useState(2);
@@ -84,13 +82,13 @@ export default function MatrixPage({}: Props) {
   return (
     <>
       <div
-        // style={{
-        //   flexDirection:
-        //     typeof window !== undefined && window.innerWidth < 767
-        //       ? "column"
-        //       : "row",
-        // }}
-        className="page_container"
+        style={{
+          flexDirection:
+            typeof window !== undefined && window.innerWidth < 767
+              ? "column"
+              : "row",
+        }}
+        className={`page_container ${styles.matrix_page_modified}`}
       >
         <div className={styles.section}>
           <div className={styles.header}>
