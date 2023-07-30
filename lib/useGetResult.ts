@@ -29,7 +29,7 @@ const useGetResult = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:8000/api/matrix/${data.operation}`,
+        `https://mathematics-qnjg.onrender.com/api/matrix/${data.operation}`,
         options
       );
       if (response.ok) {
@@ -83,7 +83,7 @@ const useGetResult = () => {
     };
     try {
       const response = await fetch(
-        `http://localhost:8000/api/matrix/equation`,
+        `https://mathematics-qnjg.onrender.com/api/matrix/equation`,
         options
       );
       if (response.ok) {
