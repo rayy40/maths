@@ -291,4 +291,7 @@
   .matrix_equation {
     overflow-x: auto;
   }
+  .types_container {
+    margin-top: -1em;
+  }
 }
