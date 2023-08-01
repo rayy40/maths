@@ -221,6 +221,7 @@ input[type="text"] {
     display: none;
   }
   .page_container {
+    padding: 3em 0 4em;
     width: 90%;
     gap: 5em;
     border-bottom: 1px solid #5f6368;

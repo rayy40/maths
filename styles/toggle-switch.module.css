@@ -72,3 +72,9 @@
   right: 0px;
   background: #333;
 }
+
+@media only screen and (max-width: 767px) {
+  .switch_handler {
+    top: 3.05em;
+  }
+}
