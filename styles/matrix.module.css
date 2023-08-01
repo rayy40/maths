@@ -111,7 +111,7 @@
 }
 
 .page_solution {
-  min-height: 100vh;
+  min-height: 100svh;
   display: none;
   margin: 0 auto;
   padding: 3em 0;

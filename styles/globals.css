@@ -29,7 +29,7 @@ body {
 .page_container {
   position: relative;
   margin: 0 auto;
-  min-height: 100vh;
+  min-height: 100svh;
   padding: 4em 0;
   width: 80%;
   max-width: 1000px;
