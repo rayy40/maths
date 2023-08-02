@@ -9,10 +9,10 @@ import NumberPad from "@/components/NumberPad";
 import { replaceVariables, scrollToContainer } from "@/lib/Helper";
 import useSolveEquation from "@/lib/useSolveEquation";
 import RenderEquationSolution from "@/components/RenderEquationSolution";
-import MathCalculator from "@/components/MathCalculator";
-import ToggleSwtich from "@/components/ToggleSwtich";
-import { FaRegCircleQuestion } from "react-icons/fa6";
-import Help from "@/components/Help";
+// import MathCalculator from "@/components/MathCalculator";
+// import ToggleSwtich from "@/components/ToggleSwtich";
+// import { FaRegCircleQuestion } from "react-icons/fa6";
+// import Help from "@/components/Help";
 import IncreaseDecreaseCount from "@/components/IncreaseDecreaseCount";
 import InputValues from "@/components/InputValues";
 
@@ -23,10 +23,10 @@ export default function EquationSolver() {
   const [activeInput, setActiveInput] = useState("");
   const [advancedExp, setAdvancedExp] = useState("");
   const [equations, setEquations] = useState([...equation]);
-  const [isHelpVisible, setIsHelpVisible] = useState(false);
+  // const [isHelpVisible, setIsHelpVisible] = useState(false);
   const [selectedParam, setSelectedParam] = useState("quadratic");
   const [polynomialExpression, setPolynomialExpression] = useState("");
-  const [isAdvancedCalcVisible, setIsAdvancedCalcVisible] = useState(false);
+  // const [isAdvancedCalcVisible, setIsAdvancedCalcVisible] = useState(false);
   const [inputValue, setInputValue] = useState<{ [key: string]: string }>({});
   const [isInputError, setIsInputError] = useState<{ [key: string]: boolean }>(
     {}
@@ -83,16 +83,16 @@ export default function EquationSolver() {
       scrollToContainer(solutionContainerRef);
     }
 
-    if (!isAdvancedCalcVisible) {
-      if (eq) {
-        getRoots({ equation: eq });
-      }
-    } else {
-      if (advancedExp) {
-        getRoots({ equation: advancedExp });
-      }
-    }
+    // if (!isAdvancedCalcVisible) {
+    // } else {
+    //   if (advancedExp) {
+    //     getRoots({ equation: advancedExp });
+    //   }
+    // }
 
+    if (eq) {
+      getRoots({ equation: eq });
+    }
     setInputValue(selectedEquation?.parameters!);
   };
 
@@ -162,33 +162,33 @@ export default function EquationSolver() {
               />
             </div>
           </div>
-          <div style={{ display: "flex" }} className="toggle_switch_wrapper">
+          {/* <div style={{ display: "flex" }} className="toggle_switch_wrapper">
             <ToggleSwtich
               label={"Advanced"}
               setToggle={setIsAdvancedCalcVisible}
             />
-          </div>
+          </div> */}
         </div>
         <div className="equation_container">
-          {isAdvancedCalcVisible ? (
+          {/* {isAdvancedCalcVisible ? (
             <BlockMath>{advancedExp}</BlockMath>
-          ) : (
-            <BlockMath>
-              {eq ??
-                (polynomialExpression.length > 0
-                  ? polynomialExpression
-                  : selectedEquation?.renderFormula!)}
-            </BlockMath>
-          )}
+          ) : ( */}
+          <BlockMath>
+            {eq ??
+              (polynomialExpression.length > 0
+                ? polynomialExpression
+                : selectedEquation?.renderFormula!)}
+          </BlockMath>
+          {/* )} */}
         </div>
         <div
           style={{
-            flexDirection: isAdvancedCalcVisible ? "column" : "row",
-            alignItems: isAdvancedCalcVisible ? "center" : "flex-start",
+            flexDirection: "row", //isAdvancedCalcVisible ? "column" : "row",
+            alignItems: "flex-start", //isAdvancedCalcVisible ? "center" : "flex-start",
           }}
           className={styles.section}
         >
-          {isAdvancedCalcVisible ? (
+          {/* {isAdvancedCalcVisible ? (
             <>
               <div>
                 <input
@@ -202,41 +202,42 @@ export default function EquationSolver() {
               <MathCalculator setAdvancedExp={setAdvancedExp} />
             </>
           ) : (
-            <>
-              <div className="input_wrapper">
-                <h3 className="sub_title">Input:</h3>
-                <div className="input_values_container">
-                  {selectedEquation &&
-                    Object.keys(selectedEquation?.parameters).map(
-                      (variable, i) => (
-                        <InputValues
-                          key={i}
-                          variable={variable}
-                          inputValue={inputValue}
-                          isInputError={isInputError}
-                          setIsInputError={setIsInputError}
-                          setInputValue={setInputValue}
-                          setActiveInput={setActiveInput}
-                        />
-                      )
-                    )}
-                </div>
+
+          )} */}
+          <>
+            <div className="input_wrapper">
+              <h3 className="sub_title">Input:</h3>
+              <div className="input_values_container">
+                {selectedEquation &&
+                  Object.keys(selectedEquation?.parameters).map(
+                    (variable, i) => (
+                      <InputValues
+                        key={i}
+                        variable={variable}
+                        inputValue={inputValue}
+                        isInputError={isInputError}
+                        setIsInputError={setIsInputError}
+                        setInputValue={setInputValue}
+                        setActiveInput={setActiveInput}
+                      />
+                    )
+                  )}
               </div>
-              <div className={styles.numpad_outer_wrapper}>
-                <h3 style={{ textAlign: "right" }} className="sub_title">
-                  Number Pad:
-                </h3>
-                <NumberPad
-                  type={"equation"}
-                  activeInput={activeInput}
-                  selectedObject={selectedEquation?.parameters!}
-                  setActiveInput={setActiveInput}
-                  setInputValue={setInputValue}
-                  setIsInputError={setIsInputError}
-                />
-              </div>
-            </>
-          )}
+            </div>
+            <div className={styles.numpad_outer_wrapper}>
+              <h3 style={{ textAlign: "right" }} className="sub_title">
+                Number Pad:
+              </h3>
+              <NumberPad
+                type={"equation"}
+                activeInput={activeInput}
+                selectedObject={selectedEquation?.parameters!}
+                setActiveInput={setActiveInput}
+                setInputValue={setInputValue}
+                setIsInputError={setIsInputError}
+              />
+            </div>
+          </>
         </div>
         <div className={styles.submit_button_wrapper}>
           <button
@@ -255,19 +256,19 @@ export default function EquationSolver() {
             Reset
           </button>
         </div>
-        {isAdvancedCalcVisible && (
+        {/* {isAdvancedCalcVisible && (
           <div className={styles.help_container}>
             <FaRegCircleQuestion
               onClick={() => setIsHelpVisible(true)}
               className={styles.help_icon}
             />
           </div>
-        )}
-        {isHelpVisible && (
+        )} */}
+        {/* {isHelpVisible && (
           <div className={styles.help_section_wrapper}>
             <Help setIsHelpVisible={setIsHelpVisible} />
           </div>
-        )}
+        )} */}
       </div>
       <div ref={solutionContainerRef} className={styles.page_solution}>
         <h3 style={{ fontSize: "1.15rem" }} className="sub_title">
