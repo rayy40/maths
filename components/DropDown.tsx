@@ -26,7 +26,7 @@ export default function DropDown({
   useOutsideAlerter(dropdownRef, setIsDropDownVisible);
 
   return (
-    <div ref={dropdownRef} style={{ color: "#9aa0a6", position: "relative" }}>
+    <div ref={dropdownRef} className={styles.dropdown_outer_wrapper}>
       Solve for :
       <span
         onClick={() => setIsDropDownVisible((v) => !v)}

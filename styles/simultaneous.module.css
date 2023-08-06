@@ -77,8 +77,8 @@
 .submit_btn_modified {
   padding: 0.75em 0.25em;
   width: 80px;
-  background: #4c5056;
-  border-color: #4c5056;
+  background: var(--accent-color);
+  border-color: var(--accent-color);
 }
 
 .submit_btn_modified:last-child {
@@ -86,7 +86,7 @@
 }
 
 .submit_btn_modified:hover {
-  background: #585d63;
+  background: var(--primary-accent-hover-color);
 }
 
 .page_solution {
@@ -95,7 +95,7 @@
   margin: 0 auto;
   width: 80%;
   max-width: 1000px;
-  border-bottom: 1px solid #5f6368;
+  border-bottom: 1px solid var(--accent-color);
 }
 
 .results_container {

@@ -12,13 +12,13 @@
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: border 0.25s cubic-bezier(0.19, 1, 0.22, 1);
-  background: #202124;
+  background: var(--background-color);
   position: relative;
   overflow: hidden;
 }
 
 .shape_container:hover {
-  border: 1px solid #ddd;
+  border: 1px solid var(--title-color);
 }
 
 .shape_name {

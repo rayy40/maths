@@ -1,5 +1,5 @@
 .title {
-  color: #9aa0a6;
+  color: var(--secondary-text-color);
   text-transform: capitalize;
   font-weight: 500;
   padding-bottom: 0.25em;
@@ -38,8 +38,8 @@
 .submit_btn_modified {
   padding: 0.75em 0.25em;
   width: 80px;
-  background: #4c5056;
-  border-color: #4c5056;
+  background: var(--accent-color);
+  border-color: var(--accent-color);
 }
 
 .submit_btn_modified:last-child {
@@ -47,12 +47,12 @@
 }
 
 .submit_btn_modified:hover {
-  background: #585d63;
+  background: var(--primary-accent-hover-color);
 }
 
 .solution_container {
   display: none;
-  border-top: 1px solid #5f6368;
+  border-top: 1px solid var(--accent-color);
   margin: 0 auto;
   padding: 3em 0;
   width: 80%;

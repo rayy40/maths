@@ -12,7 +12,7 @@
   display: block;
   overflow: hidden;
   cursor: pointer;
-  border: 0 solid #bbb;
+  border: none transparent;
   border-radius: 20px;
 }
 
@@ -30,7 +30,7 @@
   height: 32px;
   padding: 0;
   line-height: 32px;
-  color: #9aa0a6;
+  color: var(--secondary-text-color);
   font-weight: bold;
   box-sizing: border-box;
 }
@@ -41,10 +41,10 @@
   width: 21px;
   height: 21px;
   margin: 5px;
-  background: #9aa0a6;
+  background: var(--secondary-text-color);
   top: 4em;
   right: 18px;
-  border: 0 solid #bbb;
+  border: none transparent;
   border-radius: 20px;
   transition: all 0.3s ease-in 0s;
 }
@@ -52,15 +52,15 @@
 .inner:before {
   content: "";
   width: 50px;
-  background-color: #5f6368;
-  color: #333;
+  background-color: var(--accent-color);
+  color: var(--secondary-accent-color);
 }
 
 .inner:after {
   content: "";
   padding-right: 0px;
-  background-color: #34373b;
-  color: #9aa0a6;
+  background-color: var(--secondary-accent-color);
+  color: var(--secondary-text-color);
   text-align: right;
 }
 
@@ -70,7 +70,7 @@
 
 .checkbox:checked + .label .switch_handler {
   right: 0px;
-  background: #333;
+  background: var(--secondary-accent-color);
 }
 
 @media only screen and (max-width: 767px) {

@@ -12,14 +12,14 @@
   pointer-events: initial;
   width: 50px;
   height: 50px;
-  border: 1px solid #34373b;
-  color: #bdc1c6;
-  background: #34373b;
+  border: 1px solid var(--secondary-accent-color);
+  color: var(--primary-text-color);
+  background: var(--secondary-accent-color);
   border-radius: 4px;
   cursor: pointer;
-  box-shadow: inset 0px 0px 5px -2px rgba(64, 68, 72, 1);
+  box-shadow: inset 0px 0px 5px -2px var(--box-shadow-color);
 }
 
 .numpad:hover {
-  background-color: #404448;
+  background-color: var(--secondary-accent-hover-color);
 }
