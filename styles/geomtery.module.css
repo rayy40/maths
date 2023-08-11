@@ -69,8 +69,8 @@
 }
 
 .shape_img_10 {
-  right: -4em;
-  bottom: -5em;
+  right: -2em;
+  bottom: -2em;
 }
 
 .shape_img_11 {
@@ -98,16 +98,23 @@
   bottom: -8em;
 }
 
-.shape_img_16,
-.shape_img_17 {
+.shape_img_16 {
   right: -4em;
-  bottom: -8em;
+  bottom: -3em;
 }
 
-.shape_img_18,
-.shape_img_19 {
+.shape_img_17 {
   right: -4em;
-  bottom: -8em;
+  bottom: -6em;
+}
+
+.shape_img_18 {
+  right: -2em;
+  bottom: -2em;
+}
+.shape_img_19 {
+  right: 0em;
+  bottom: -3em;
 }
 
 .shape_img_20 {

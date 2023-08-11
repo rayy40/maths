@@ -14,12 +14,14 @@ import { BlockMath } from "react-katex";
 import ToggleSwtich from "@/components/ToggleSwtich";
 import InputValues from "@/components/InputValues";
 import NumberPad from "@/components/NumberPad";
+import useSystemColorScheme from "@/lib/useSystemColorScheme";
 
 type Params = {
   params: { shape: string };
 };
 
 export default function ShapePage({ params: { shape } }: Params) {
+  const isDarkMode = useSystemColorScheme();
   let solutionContainerRef = useRef<HTMLDivElement | null>(null);
   const [activeInput, setActiveInput] = useState("");
   const [selectedParam, setSelectedParam] = useState("area");
@@ -164,7 +166,25 @@ export default function ShapePage({ params: { shape } }: Params) {
               />
             </div>
           ) : (
-            <div className={styles.figure}>{selectedShape?.image}</div>
+            <div className={styles.figure}>
+              {React.cloneElement(selectedShape?.image!, {
+                children: React.Children.map(
+                  selectedShape?.image.props.children,
+                  (child) => {
+                    if (child.type === "rect") {
+                      return React.cloneElement(child, {
+                        fill: isDarkMode ? "#202124" : "#ebeaeb",
+                      });
+                    } else if (child.type === "path") {
+                      return React.cloneElement(child, {
+                        fill: isDarkMode ? "#D9D9D9" : "#3A3D40", // Change the fill color for path elements
+                      });
+                    }
+                    return child;
+                  }
+                ),
+              })}
+            </div>
           )}
         </div>
         <div className={styles.submit_button_wrapper}>
