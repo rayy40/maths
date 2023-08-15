@@ -3,13 +3,15 @@
 import { useEffect, useState } from "react";
 
 const useSystemColorScheme = () => {
+  const isClient = typeof window !== "undefined";
+
   const [isDarkMode, setIsDarkMode] = useState(
-    typeof window !== undefined
-      ? window.matchMedia("(prefers-color-scheme: dark)").matches
-      : false
+    isClient ? window.matchMedia("(prefers-color-scheme: dark)").matches : false
   );
 
   useEffect(() => {
+    if (!isClient) return;
+
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
     const handleChange = (event: MediaQueryListEvent) => {
@@ -21,7 +23,7 @@ const useSystemColorScheme = () => {
     return () => {
       mediaQuery.removeEventListener("change", handleChange);
     };
-  }, []);
+  }, [isClient]);
 
   return isDarkMode;
 };
