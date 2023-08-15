@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 
 const useSystemColorScheme = () => {
   const [isDarkMode, setIsDarkMode] = useState(
-    window.matchMedia("(prefers-color-scheme: dark)").matches
+    typeof window !== undefined
+      ? window.matchMedia("(prefers-color-scheme: dark)").matches
+      : false
   );
 
   useEffect(() => {
