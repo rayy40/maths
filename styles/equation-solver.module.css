@@ -79,7 +79,7 @@
   margin: 0 auto;
   width: 80%;
   max-width: 1000px;
-  border-bottom: 1px solid var(--accent-color);
+  border-top: 1px solid var(--accent-color);
 }
 
 .equation_wrapper {

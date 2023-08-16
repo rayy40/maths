@@ -62,7 +62,6 @@ body {
   display: flex;
   flex-direction: column;
   gap: 2.5em;
-  border-bottom: 1px solid var(--accent-color);
 }
 
 .header_container {
@@ -199,6 +198,38 @@ input[type="text"] {
 .select_button_disabled {
   pointer-events: none;
   opacity: 0.5;
+}
+
+.navbar_wrapper {
+  position: fixed;
+  top: 0;
+  padding: 1.5em;
+  width: 100%;
+  z-index: 99;
+  transition: background 250ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.navbar_scrolled {
+  background: var(--background-color);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 0px 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.navbar_wrapper_list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5em;
+  list-style-type: none;
+}
+
+.navbar_wrapper_item {
+  opacity: 0.5;
+  cursor: pointer;
+  transition: opacity 250ms ease;
+}
+
+.navbar_wrapper_item:hover {
+  opacity: 1;
 }
 
 .lds-ring {
