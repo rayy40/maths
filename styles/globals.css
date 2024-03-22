@@ -3,6 +3,7 @@
   --title-color: #ddd;
   --primary-text-color: #bdc1c6;
   --secondary-text-color: #9aa0a6;
+  --outline-color: #4e7ac2;
   --accent-color: #585d63;
   --secondary-accent-color: #34373b;
   --primary-accent-hover-color: #4c5056;
@@ -16,6 +17,7 @@
     --title-color: #000;
     --primary-text-color: #000;
     --secondary-text-color: #333;
+    --outline-color: #5779f3;
     --accent-color: #8e8c8e;
     --secondary-accent-color: #bab9ba;
     --primary-accent-hover-color: #a4a2a4;
@@ -134,6 +136,10 @@ body {
   color: #b43a4e !important;
 }
 
+.input_error:focus {
+  outline: transparent !important;
+}
+
 .expression {
   width: 30px;
   font-size: 1.5rem;
@@ -143,14 +149,19 @@ body {
   color: #b43a4e !important;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="number"] {
   border: 1px solid var(--accent-color);
   border-radius: 2px;
   color: var(--secondary-text-color);
   padding: 0.65em;
   background: transparent;
   font-size: 0.925rem;
-  outline: var(--secondary-text-color);
+}
+
+input:focus,
+input:focus-visible {
+  outline: 1px solid var(--outline-color);
 }
 
 .katex-display {
@@ -174,6 +185,12 @@ input[type="text"] {
   transition: background 100ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
+.submit_button_modified {
+  margin-top: 0.5em;
+  padding: 0.45em;
+  width: 100%;
+}
+
 .submit_button:hover {
   background: var(--primary-accent-hover-color);
 }
@@ -189,6 +206,25 @@ input[type="text"] {
   border-radius: 4px;
   cursor: pointer;
   box-shadow: inset 0px 0px 5px -2px var(--box-shadow-color);
+}
+
+.select_button_power {
+  position: absolute;
+  width: 93.5%;
+  right: -100px;
+  background: var(--secondary-accent-color);
+  border: 1px solid var(--secondary-accent-color);
+  border-radius: 6px;
+  padding: 6px;
+  text-align: left;
+  z-index: 10;
+  box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px,
+    rgba(15, 15, 15, 0.2) 0px 3px 6px, rgba(15, 15, 15, 0.4) 0px 9px 24px;
+
+  p {
+    color: var(--secondary-text-color);
+    padding-bottom: 6px;
+  }
 }
 
 .select_button_modified {
