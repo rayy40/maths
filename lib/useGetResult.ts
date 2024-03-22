@@ -1,4 +1,5 @@
 import { useApiContext, useMatrixContext } from "@/context/MatrixContext";
+import { equation } from "./equations";
 
 const useGetResult = () => {
   const {
@@ -16,8 +17,11 @@ const useGetResult = () => {
     matrix: { [key: string]: [][] } | string[][];
     operation: string;
     expression: string;
+    power?: number;
   }) => {
     setIsLoading(true);
+
+    console.log(data.matrix);
 
     const options = {
       method: "POST",
@@ -29,12 +33,11 @@ const useGetResult = () => {
 
     try {
       const response = await fetch(
-        `https://mathematics-qnjg.onrender.com/api/matrix/${data.operation}`,
+        `http://127.0.0.1:8000/api/matrix/${data.operation}`,
         options
       );
       if (response.ok) {
         const res = await response.json();
-        console.log(res);
         if (data.operation === "eigen") {
           setEigenValueAndVector({
             [`Eigen value(${data.expression.split("(")[1].split(")")[0]})`]: {
@@ -74,6 +77,9 @@ const useGetResult = () => {
   }) => {
     setIsLoading(true);
 
+    console.log(data.equation);
+    console.log(data.matrixHistory);
+
     const options = {
       method: "POST",
       headers: {
@@ -83,7 +89,7 @@ const useGetResult = () => {
     };
     try {
       const response = await fetch(
-        `https://mathematics-qnjg.onrender.com/api/matrix/equation`,
+        `http://127.0.0.1:8000/api/matrix/equation`,
         options
       );
       if (response.ok) {

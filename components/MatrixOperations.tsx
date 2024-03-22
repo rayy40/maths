@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "@/styles/matrix.module.css";
 import { InlineMath } from "react-katex";
 import { useApiContext, useMatrixContext } from "@/context/MatrixContext";
@@ -24,7 +24,47 @@ export default function MatrixOperations({ handleScroll }: Props) {
   } = useMatrixContext();
   const { setIsError } = useApiContext();
   const [selectedMatrix, setSelectedMatrix] = useState(exp);
+  const [showInputPower, setShowInputPower] = useState(false);
+  const [power, setPower] = useState(1);
   const prevMatrixEquationRef = useRef("");
+  const inputPowerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (
+        inputPowerRef.current &&
+        !inputPowerRef.current.contains(e.target as Node)
+      ) {
+        setShowInputPower(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [inputPowerRef]);
+
+  const getButtonClassName = (
+    buttonLabel: { name: string; exp: string },
+    index: number
+  ) => {
+    const isButtonDisabled = buttonLabel?.exp === exp;
+    const isButtonModified = [8, 9, 10, 11].includes(index);
+
+    let className = "select_button";
+
+    if (isButtonDisabled) {
+      className += " select_button_disabled";
+    }
+
+    if (isButtonModified) {
+      className += " select_button_modified";
+    }
+
+    return className;
+  };
 
   const handleMatrixChange = (matrix: string) => {
     setExp(matrix);
@@ -44,20 +84,47 @@ export default function MatrixOperations({ handleScroll }: Props) {
     );
   };
 
+  const handleOperationsClick = (label: { name: string; exp: string }) => {
+    const operations = [
+      "addition",
+      "subtraction",
+      "multiplication",
+      "division",
+    ];
+
+    if (label.name === "power") {
+      setShowInputPower(true);
+    } else {
+      setShowInputPower(false);
+      if (isCalculatorOn || operations.includes(label.name)) {
+        return handleMatrixEquation(label);
+      } else {
+        return handleOperationChange(label);
+      }
+    }
+  };
+
   const handleOperationChange = (op: { name: string; exp: string }) => {
     setIsError(false);
+    let exp = op.exp;
+
     if (op.name !== "enter") {
-      setExp(op.exp);
-      if (!matrixHistory?.[op.exp] && !eigenValAndVector?.[op.exp]) {
+      if (op.name === "power") {
+        const variable = op.exp.split("^")[0];
+        exp = `${variable}^${power}`;
+      }
+      setExp(exp);
+      if (!matrixHistory?.[exp] && !eigenValAndVector?.[exp]) {
         getResult({
           matrix: matrixHistory?.[selectedMatrix] as string[][],
           operation: op.name,
-          expression: op.exp,
+          expression: exp,
+          power: op.name === "power" ? power : undefined,
         });
       }
     }
-    prevMatrixEquationRef.current = op.exp;
-    setMatrixEquation(op.exp, isCalculatorOn);
+    prevMatrixEquationRef.current = exp;
+    setMatrixEquation(exp, isCalculatorOn);
   };
 
   const handleMatrixEquation = (buttonLabel: { name: string; exp: string }) => {
@@ -70,6 +137,10 @@ export default function MatrixOperations({ handleScroll }: Props) {
       return setIsCalculatorOn(false);
     }
     let copy = buttonLabel?.exp;
+    if (buttonLabel.name === "power") {
+      const variable = buttonLabel.exp.split("^")[0];
+      copy = `${variable}^${power}`;
+    }
     setIsCalculatorOn(true);
     if (prevMatrixEquationRef.current === matrixEquation) {
       copy = prevMatrixEquationRef.current + copy;
@@ -103,23 +174,37 @@ export default function MatrixOperations({ handleScroll }: Props) {
           {opsArray
             ?.filter((_, index) => index < 12)
             .map((buttonLabel, index) => (
-              <button
-                key={index}
-                onClick={() =>
-                  [4, 5, 6, 7].includes(index)
-                    ? handleMatrixEquation(buttonLabel)
-                    : isCalculatorOn
-                    ? handleMatrixEquation(buttonLabel)
-                    : handleOperationChange(buttonLabel)
-                }
-                className={`select_button ${
-                  buttonLabel?.exp === exp && "select_button_disabled"
-                } ${
-                  [8, 9, 10, 11].includes(index) && "select_button_modified"
-                }`}
-              >
-                <InlineMath math={buttonLabel.exp} />
-              </button>
+              <>
+                <button
+                  key={index}
+                  onClick={() => handleOperationsClick(buttonLabel)}
+                  className={getButtonClassName(buttonLabel, index)}
+                >
+                  <InlineMath math={buttonLabel.exp} />
+                </button>
+                {showInputPower && index === 3 && (
+                  <div ref={inputPowerRef} className="select_button_power">
+                    <p>Power</p>
+                    <input
+                      onChange={(e) => setPower(parseInt(e.target.value))}
+                      id="power"
+                      type="number"
+                    />
+                    <button
+                      type="submit"
+                      onClick={() => {
+                        setShowInputPower(false);
+                        isCalculatorOn
+                          ? handleMatrixEquation(buttonLabel)
+                          : handleOperationChange(buttonLabel);
+                      }}
+                      className="submit_button submit_button_modified"
+                    >
+                      Done
+                    </button>
+                  </div>
+                )}
+              </>
             ))}
         </div>
       </div>
