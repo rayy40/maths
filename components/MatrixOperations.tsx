@@ -173,9 +173,8 @@ export default function MatrixOperations({ handleScroll }: Props) {
           {opsArray
             ?.filter((_, index) => index < 14)
             .map((buttonLabel, index) => (
-              <>
+              <div key={index}>
                 <button
-                  key={index}
                   onClick={() => handleOperationsClick(buttonLabel)}
                   className={getButtonClassName(buttonLabel, index)}
                 >
@@ -203,7 +202,7 @@ export default function MatrixOperations({ handleScroll }: Props) {
                     </button>
                   </div>
                 )}
-              </>
+              </div>
             ))}
         </div>
       </div>
