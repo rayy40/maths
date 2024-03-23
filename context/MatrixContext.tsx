@@ -4,7 +4,6 @@ import {
   OperationsType,
   EigenValAndVector,
   CalculatedResultType,
-  MatrixExpressionType,
 } from "@/lib/types";
 
 const operations: OperationsType = [
