@@ -18,7 +18,7 @@ const useSolveEquation = () => {
 
     try {
       const response = await fetch(
-        `https://mathematics-qnjg.onrender.com/api/roots/equation-solver`,
+        `${process.env.NEXT_PUBLIC_URL}/api/roots/equation-solver`,
         options
       );
       if (response.ok) {
@@ -53,7 +53,7 @@ const useSolveEquation = () => {
     };
     try {
       const response = await fetch(
-        `https://mathematics-qnjg.onrender.com/api/roots/simultaneous-equation`,
+        `${process.env.NEXT_PUBLIC_URL}/api/roots/simultaneous-equation`,
         options
       );
       if (response.ok) {

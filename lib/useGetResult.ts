@@ -1,5 +1,4 @@
 import { useApiContext, useMatrixContext } from "@/context/MatrixContext";
-import { equation } from "./equations";
 
 const useGetResult = () => {
   const {
@@ -31,7 +30,7 @@ const useGetResult = () => {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/api/matrix/${data.operation}`,
+        `${process.env.NEXT_PUBLIC_URL}/api/matrix/${data.operation}`,
         options
       );
       if (response.ok) {
@@ -84,7 +83,7 @@ const useGetResult = () => {
     };
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/api/matrix/equation`,
+        `${process.env.NEXT_PUBLIC_URL}/api/matrix/equation`,
         options
       );
       if (response.ok) {
