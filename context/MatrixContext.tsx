@@ -19,6 +19,8 @@ const operations: OperationsType = [
   { name: "determinant", exp: "det(A)" },
   { name: "trace", exp: "trace(A)" },
   { name: "enter", exp: "Enter" },
+  { name: "clear", exp: "Clear" },
+  { name: "clear all", exp: "Clear All" },
   { name: "eigen", exp: "Eigen value(A)" },
   { name: "eigen", exp: "Eigen vector(A)" },
 ];

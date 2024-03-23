@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import styles from "@/styles/matrix.module.css";
 import { InlineMath } from "react-katex";
 import { useApiContext, useMatrixContext } from "@/context/MatrixContext";
 import useGetResult from "@/lib/useGetResult";
+import useOutsideClick from "@/lib/useOutsideClick";
 
 type Props = {
   handleScroll: () => void;
@@ -29,29 +30,16 @@ export default function MatrixOperations({ handleScroll }: Props) {
   const prevMatrixEquationRef = useRef("");
   const inputPowerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleOutsideClick = (e: MouseEvent) => {
-      if (
-        inputPowerRef.current &&
-        !inputPowerRef.current.contains(e.target as Node)
-      ) {
-        setShowInputPower(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleOutsideClick);
-
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, [inputPowerRef]);
+  useOutsideClick(inputPowerRef, () => {
+    setShowInputPower(false);
+  });
 
   const getButtonClassName = (
     buttonLabel: { name: string; exp: string },
     index: number
   ) => {
     const isButtonDisabled = buttonLabel?.exp === exp;
-    const isButtonModified = [8, 9, 10, 11].includes(index);
+    const isButtonModified = index > 7 && index < 14;
 
     let className = "select_button";
 
@@ -77,10 +65,16 @@ export default function MatrixOperations({ handleScroll }: Props) {
 
   const handleChangeOpsArray = (matrix: string) => {
     setOpsArray(
-      opsArray.map((op) => ({
-        ...op,
-        exp: op.exp.replace(/(?![TE])[A-Z]/g, matrix),
-      }))
+      opsArray.map((op) => {
+        if (op.name.includes("clear") || op.name.includes("clear all")) {
+          return op;
+        } else {
+          return {
+            ...op,
+            exp: op.exp.replace(/(?![TE])[A-Z]/g, matrix),
+          };
+        }
+      })
     );
   };
 
@@ -92,11 +86,19 @@ export default function MatrixOperations({ handleScroll }: Props) {
       "division",
     ];
 
+    console.log(matrixEquation);
+    console.log(exp);
+
     if (label.name === "power") {
       setShowInputPower(true);
     } else {
       setShowInputPower(false);
-      if (isCalculatorOn || operations.includes(label.name)) {
+      if (label.name === "clear all") {
+        setExp("");
+        setIsCalculatorOn(false);
+        setMatrixEquation("", false);
+      } else if (label.name === "clear") {
+      } else if (isCalculatorOn || operations.includes(label.name)) {
         return handleMatrixEquation(label);
       } else {
         return handleOperationChange(label);
@@ -172,7 +174,7 @@ export default function MatrixOperations({ handleScroll }: Props) {
         <h3 className={styles.sub_title}>Operations: </h3>
         <div className={styles.operations_wrapper}>
           {opsArray
-            ?.filter((_, index) => index < 12)
+            ?.filter((_, index) => index < 14)
             .map((buttonLabel, index) => (
               <>
                 <button
@@ -212,7 +214,7 @@ export default function MatrixOperations({ handleScroll }: Props) {
         <h3 className={styles.sub_title}>Advanced Operations: </h3>
         <div className={styles.operations_wrapper}>
           {opsArray
-            ?.filter((_, index) => index > 11)
+            ?.filter((_, index) => index > 13)
             .map((buttonLabel, index) => (
               <button
                 onClick={() => handleOperationChange(buttonLabel)}
