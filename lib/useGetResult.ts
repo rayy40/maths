@@ -21,8 +21,6 @@ const useGetResult = () => {
   }) => {
     setIsLoading(true);
 
-    console.log(data.matrix);
-
     const options = {
       method: "POST",
       headers: {
@@ -76,9 +74,6 @@ const useGetResult = () => {
     equation: string;
   }) => {
     setIsLoading(true);
-
-    console.log(data.equation);
-    console.log(data.matrixHistory);
 
     const options = {
       method: "POST",
