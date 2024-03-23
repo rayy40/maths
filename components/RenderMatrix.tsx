@@ -65,18 +65,20 @@ export default function RenderMatrix() {
             {!isCalculatorOn && (
               <>
                 <InlineMath math={exp} />
-                <InlineMath math={"="} />
+                {exp && <InlineMath math={"="} />}
               </>
             )}
             <div style={{ fontSize: "1.25rem" }}>
               {isCalculatorOn ? (
-                <BlockMath math={matrixEquation} />
+                <BlockMath math={matrixEquation.join("")} />
               ) : typeof matrixHistory?.[exp] === "string" ? (
                 <BlockMath math={matrixHistory?.[exp] as string} />
-              ) : (
+              ) : exp ? (
                 <BlockMath
                   math={convertToLatex(matrixHistory?.[exp] as string[][])}
                 />
+              ) : (
+                ""
               )}
             </div>
           </div>

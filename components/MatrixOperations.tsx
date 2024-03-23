@@ -60,7 +60,7 @@ export default function MatrixOperations({ handleScroll }: Props) {
     setSelectedMatrix(matrix);
     handleChangeOpsArray(matrix);
     prevMatrixEquationRef.current = matrix;
-    setMatrixEquation(matrix, isCalculatorOn);
+    setMatrixEquation(matrix, false);
   };
 
   const handleChangeOpsArray = (matrix: string) => {
@@ -86,9 +86,6 @@ export default function MatrixOperations({ handleScroll }: Props) {
       "division",
     ];
 
-    console.log(matrixEquation);
-    console.log(exp);
-
     if (label.name === "power") {
       setShowInputPower(true);
     } else {
@@ -98,6 +95,9 @@ export default function MatrixOperations({ handleScroll }: Props) {
         setIsCalculatorOn(false);
         setMatrixEquation("", false);
       } else if (label.name === "clear") {
+        const temp = matrixEquation;
+        const updatedArray = temp.slice(0, -1);
+        setMatrixEquation(updatedArray, false);
       } else if (isCalculatorOn || operations.includes(label.name)) {
         return handleMatrixEquation(label);
       } else {
@@ -126,7 +126,7 @@ export default function MatrixOperations({ handleScroll }: Props) {
       }
     }
     prevMatrixEquationRef.current = exp;
-    setMatrixEquation(exp, isCalculatorOn);
+    setMatrixEquation(exp, false);
   };
 
   const handleMatrixEquation = (buttonLabel: { name: string; exp: string }) => {
@@ -134,7 +134,7 @@ export default function MatrixOperations({ handleScroll }: Props) {
       handleScroll();
       getEquation({
         matrixHistory: matrixHistory as { [key: string]: string[][] },
-        equation: matrixEquation,
+        equation: matrixEquation.join(""),
       });
       return setIsCalculatorOn(false);
     }
@@ -144,10 +144,7 @@ export default function MatrixOperations({ handleScroll }: Props) {
       copy = `${variable}^${power}`;
     }
     setIsCalculatorOn(true);
-    if (prevMatrixEquationRef.current === matrixEquation) {
-      copy = prevMatrixEquationRef.current + copy;
-    }
-    setMatrixEquation(copy, isCalculatorOn);
+    setMatrixEquation(copy, true);
   };
 
   return (

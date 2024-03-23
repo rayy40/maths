@@ -4,6 +4,7 @@ import {
   OperationsType,
   EigenValAndVector,
   CalculatedResultType,
+  MatrixExpressionType,
 } from "@/lib/types";
 
 const operations: OperationsType = [
@@ -41,8 +42,11 @@ interface MatrixState {
   setIsCalculationVisible: (isCalculationVisible: boolean) => void;
   exp: string;
   setExp: (exp: string) => void;
-  matrixEquation: string;
-  setMatrixEquation: (matrixEquation: string, isCalculatorOn: boolean) => void;
+  matrixEquation: string[];
+  setMatrixEquation: (
+    matrixEquation: string | string[],
+    isCalculatorOn: boolean
+  ) => void;
   eigenValAndVector: EigenValAndVector;
   setEigenValueAndVector: (eigenValueAndVector: EigenValAndVector) => void;
   latexCalculatedResult: CalculatedResultType;
@@ -72,10 +76,17 @@ const useMatrixStore = create<MatrixState>((set) => ({
     set({ isCalculationVisible }),
   exp: "A",
   setExp: (exp) => set({ exp }),
-  matrixEquation: "A",
-  setMatrixEquation: (text: string, isCalculatorOn: boolean) =>
+  matrixEquation: [],
+  setMatrixEquation: (text: string | string[], isCalculatorOn: boolean) =>
     set((state) => ({
-      matrixEquation: isCalculatorOn ? state.matrixEquation + text : text,
+      matrixEquation:
+        typeof text === "string"
+          ? isCalculatorOn
+            ? [...state.matrixEquation, text]
+            : [text]
+          : isCalculatorOn
+          ? [...state.matrixEquation, ...text]
+          : [...text],
     })),
   eigenValAndVector: {},
   setEigenValueAndVector: (eigenValueAndVector) =>
